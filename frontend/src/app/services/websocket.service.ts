@@ -7,7 +7,7 @@ import { MessageService } from './message.service';
   providedIn: 'root'
 })
 export class WebsocketService extends Subscribable {
-  ws = new WebSocket(`ws://${window.location.hostname}:8080`);
+  ws = new WebSocket(`ws://${window.location.hostname}:8081`);
 
   constructor(private messageService:MessageService, private router:Router) {
     super()

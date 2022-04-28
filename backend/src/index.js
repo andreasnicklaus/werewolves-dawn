@@ -2,7 +2,7 @@ import { WebSocketServer } from "ws";
 import {v4 as uuidv4} from "uuid"
 import {handleMessage, handleClose} from "./roomService.js";
 
-const PORT =  8080
+const PORT =  8081
 
 const wss = new WebSocketServer({port: PORT})
 

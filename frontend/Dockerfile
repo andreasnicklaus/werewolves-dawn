@@ -1,4 +1,4 @@
-FROM node:16.10-alpine as build
+FROM arm32v7/node:16 as build
 WORKDIR /app
 
 COPY package.json package-lock.json ./

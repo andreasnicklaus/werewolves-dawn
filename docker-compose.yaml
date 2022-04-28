@@ -5,12 +5,12 @@ services:
     build:
       context: ./backend
     ports:
-      - 8080:8080
+      - 8081:8081
 
   frontend:
     build:
       context: ./frontend
     ports:
-      - 82:80
+      - 83:80
     depends_on:
       - backend
