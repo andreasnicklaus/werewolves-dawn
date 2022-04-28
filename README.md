@@ -1,4 +1,4 @@
-<p style="font-size: 4em; text-align: center; font-weight: bold; text-decoration: underline;">Werwolves - Dawn</p>
+# Werwolves - Dawn <!-- omit in toc -->
 
 - [Upcoming Features](#upcoming-features)
 - [Setting](#setting)
@@ -19,7 +19,7 @@
   - Time settings: Normal (10 seconds), Long (15 seconds) Extra long (20 seconds)
   - Multiplication settings: Extra time for simultaneous actions
     - Normal: number of Players * wait time
-    - Balanced: &radic;<span style="text-decoration: overline">number of players</span> * wait time
+    - Balanced: <img src="https://render.githubusercontent.com/render/math?math=\sqrt{\textrm{number of Players}}"> * wait time
     - Quick: wait time
 # Setting
 
