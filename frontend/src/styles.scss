@@ -1,4 +1,38 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.m2 {
+  margin: 16px;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.gridCenter {
+  display: grid;
+  place-items: center;
+}
+
+div .warn {
+  font-weight: bold;
+  padding: 16px;
+  background-color: rgba($color: #ff4848, $alpha: .5);
+  border: solid 2px rgba($color: #ff4848, $alpha: 1.0);
+  border-radius: 8px;
+}

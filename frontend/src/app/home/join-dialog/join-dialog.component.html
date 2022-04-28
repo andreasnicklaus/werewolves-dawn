@@ -1,1 +1,16 @@
-<p>join-dialog works!</p>
+<h1 mat-dialog-title>Join a running game</h1>
+<div mat-dialog-content>
+  <p>In order to join a game, you have to give yourself an identifiable name and specify the room code.</p>
+  <mat-form-field class="fullWidth">
+    <mat-label>Your name</mat-label>
+    <input matInput [(ngModel)]="data.name"/>
+  </mat-form-field>
+  <mat-form-field class="fullWidth">
+    <mat-label>Room code</mat-label>
+    <input matInput [(ngModel)]="data.roomCode"/>
+  </mat-form-field>
+</div>
+<mat-dialog-actions align="end">
+  <button mat-stroked-button (click)="closeDialog()" color="primary">Cancel</button>
+  <button mat-raised-button (click)="start()" color="primary" [disabled]="!data.name || !data.roomCode">Go</button>
+</mat-dialog-actions>

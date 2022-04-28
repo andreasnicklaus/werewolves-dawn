@@ -1,0 +1,16 @@
+<h1 mat-dialog-title>The round ended! Give your vote now:</h1>
+
+<div mat-dialog-content class="buttonContainer">
+  <mat-card *ngFor="let player of getVoteOptions()">
+    {{ player.name }}
+    <mat-card-actions>
+      <button mat-stroked-button color="primary" (mousedown)="vote(player.uuid)">
+        Vote
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
+<div *ngIf="voteGiven">
+  You voted for {{votedFor}}
+</div>

@@ -1,17 +1,36 @@
-<h1 mat-dialog-title>Roles</h1>
-<div mat-dialog-content>
-  <mat-selection-list #roleSelectionList>
-    <mat-list-option *ngFor="let role of data.roles">
-      {{ role.name }}
-    </mat-list-option>
-  </mat-selection-list>
-  <button
-    mat-stroked-button
-    color="primary"
-    (click)="setRoles(roleSelectionList.selectedOptions.selected)"
-  >Save roles</button>
+<h1 mat-dialog-title>Settings</h1>
+<div mat-dialog-content id="settings">
+  <mat-expansion-panel>
 
-  <button mat-raised-button color="primary" (click)="startGame()">
-    Start game
-  </button>
+    <mat-expansion-panel-header>
+      <mat-panel-title>Roles</mat-panel-title>
+      <mat-panel-description>Choose the available roles</mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <mat-selection-list #roleSelectionList [(ngModel)]="data.selectedRoles">
+      <mat-list-option *ngFor="let role of data.roles" color="primary" [value]="role" [selected]="roleIsSelected(role)">
+        {{ role.name }}
+        <mat-icon color="primary" [matTooltip]="role.description || ''">info</mat-icon>
+      </mat-list-option>
+    </mat-selection-list>
+
+    <mat-card-actions align="end">
+      <button mat-stroked-button color="primary" (click)="setRoles()">
+        Save roles
+      </button>
+    </mat-card-actions>
+  </mat-expansion-panel>
+
+  <div *ngIf="!roleNumberIsOk()" class="m2 warn">
+    The number of selected roles does not match:<br>number of players + 2
+  </div>
+  <!-- TODO: change the waittime (number & sqrt(numberOfPlayersatOnce)) -->
+
+  <mat-dialog-actions align="end">
+      <span [matTooltip]="roleNumberIsOk()? '': 'The number of selected roles does not match: number of players + 2'">
+        <button mat-raised-button color="primary" (click)="startGame()" [disabled]="!roleNumberIsOk()">
+          Start game
+        </button>
+      </span>
+  </mat-dialog-actions>
 </div>

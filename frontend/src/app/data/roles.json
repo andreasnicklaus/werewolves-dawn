@@ -5,7 +5,7 @@
   {"order": 2, "name": "Seeing wolf", "description": "Wakes once with all werewolves, who will now be able to recognise each other. If alone, can look at a card in the middle. Wakes again after the other werewolves and can look at the role of another player unless protected by the warden", "friendly": false},
   {"order": 5, "name": "Ghost buster", "description": "Can look at two cards one after the other unless protected by the warden. If he chooses a werewolf, he becomes that role", "friendly": true},
   {"order": 5, "name": "Young seer", "description": "Can look at one card in the middle", "friendly": true},
-  {"order": 6, "name": "Witch", "description": "Can look at a card in the middle. If she does so, she has to then switch that card with players card (even her own) unless protected by the warden. That player will not wake again for his/her new role", "friendly": true},
+  {"order": 6, "name": "Witch", "description": "Can look at a card in the middle. If she does so, she has to then switch that card with a players card (even her own) unless protected by the warden. That player will not wake again for his/her new role", "friendly": true},
   {"order": 7, "name": "Idiot", "description": "Switches all role cards but his own and the middle cards one spot to the left or right unless protected by the warden", "friendly": true},
   {"order": 7, "name": "Fortune teller", "description": "Gets to know all players who have performed an action that night", "friendly": true},
   {"order": 10, "name": "Scout", "description": "Can turn a single card for all players to see unless protected by the warden", "friendly": true},

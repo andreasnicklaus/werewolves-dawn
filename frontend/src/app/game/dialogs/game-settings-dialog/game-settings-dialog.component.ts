@@ -1,8 +1,8 @@
+import { BooleanInput } from '@angular/cdk/coercion';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatListOption } from '@angular/material/list';
 import { Role } from 'src/app/interfaces/role';
-import { WerewolfGame } from 'src/app/interfaces/werewolf-game';
+import { GameService } from "../../../services/game.service";
 
 @Component({
   selector: 'app-game-settings-dialog',
@@ -13,18 +13,28 @@ export class GameSettingsDialogComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<GameSettingsDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {game:WerewolfGame, roles:Role[]},
-
+    @Inject(MAT_DIALOG_DATA) public data: { roles: Role[], selectedRoles: Role[] },
+    public gameService: GameService
   ) { }
 
   ngOnInit(): void {}
 
-  setRoles(roles: MatListOption[]) {
-    console.warn(roles)
+  roleIsSelected(role: Role): BooleanInput {
+    if (!this.data.selectedRoles) return false
+    return this.data.selectedRoles.some(sRole => sRole.name === role.name)
+  }
+
+  setRoles() {
+    this.gameService.setupRoles(this.data.selectedRoles)
   }
 
   startGame() {
-    // TODO: start the game
+    this.gameService.startGame()
+    this.dialogRef.close()
+  }
+
+  roleNumberIsOk() {
+    return (this.data.selectedRoles?.length || 0) === ((this.gameService.game?.playerList.length || 0) + 2)
   }
 
 }

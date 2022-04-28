@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>{{winnerTeamString}} won!</h1>
+<div mat-dialog-content>
+  <ng-container *ngIf="data.roleAfterTheRound.friendly === data.winnerFriendly; then youWin;else youLose"></ng-container>
+
+  <ng-template #youWin>
+    <p>You won as {{data.roleAfterTheRound.name}}!</p>
+  </ng-template>
+
+  <ng-template #youLose>
+    <p>You lost as {{data.roleAfterTheRound.name}}!</p>
+  </ng-template>
+</div>

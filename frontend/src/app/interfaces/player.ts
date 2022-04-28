@@ -5,4 +5,5 @@ export interface Player {
   name: string;
   role?: Role;
   vote?: string;
+  protectedByWarden?: Boolean;
 }

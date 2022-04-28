@@ -1,5 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {Router} from "@angular/router";
+import {GameService} from "../../services/game.service";
 
 interface DialogData {
   name: string;
@@ -14,7 +16,9 @@ export class HostDialogComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<HostDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private router: Router,
+    private gameService:GameService
   ) { }
 
   ngOnInit(): void {
@@ -25,8 +29,8 @@ export class HostDialogComponent implements OnInit {
   }
 
   start():void {
-    console.log("START");
-    // TODO: Initialize the game and route to /game
+    this.gameService.join(this.data.name)
+    this.router.navigate(["/game"])
     this.closeDialog();
   }
 

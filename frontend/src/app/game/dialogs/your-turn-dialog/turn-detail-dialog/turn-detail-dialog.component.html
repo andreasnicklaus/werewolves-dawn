@@ -1,1 +1,68 @@
-<p>turn-detail-dialog works!</p>
+<ng-container class="m2" *ngIf="data.overTurnedRole; then turnedRoleInfo"></ng-container>
+
+<ng-template #turnedRoleInfo>
+    <h1 mat-dialog-title>You turned these cards over:</h1>
+    <div mat-dialog-content>
+      <h2>{{ data.overTurnedRole?.name }}</h2>
+      <mat-chip-list>
+        <mat-chip [color]="data.overTurnedRole?.friendly ? 'primary': 'warn'" selected>
+          {{data.overTurnedRole?.friendly ? 'villager' : 'werewolf'}}
+        </mat-chip>
+      </mat-chip-list>
+      <p>{{ data.overTurnedRole?.description }}</p>
+    </div>
+</ng-template>
+
+<div *ngIf="data.myRole?.name === 'Ghost buster'">
+  <mat-divider></mat-divider>
+
+  <ng-container class="m2" *ngIf="data.overTurnedRole?.friendly; then anotherTurnOver; else turnedOverWerewolf"></ng-container>
+  <ng-template #anotherTurnOver>
+    <p>You turned over a {{data.overTurnedRole?.name}}. Choose another player's role card or skip:</p>
+    <mat-button-toggle-group class="m2" [(ngModel)]="data.ghostBusterInfo.selectedPlayerUUID">
+      <mat-button-toggle *ngFor="let player of data.ghostBusterInfo.playerList" [value]="player.uuid">
+        {{ player.name }}
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+
+    <mat-divider></mat-divider>
+
+    <div class="m2 buttonContainer">
+      <button mat-raised-button color="primary" (click)="ghostBusterAction()">Done</button>
+      <button mat-stroked-button color="primary" (click)="dialogRef.close()">Skip</button>
+    </div>
+  </ng-template>
+
+  <ng-template #turnedOverWerewolf>
+    <p>You turned over a {{data.overTurnedRole?.name}}. You will now be in the werewolves' team yourself.</p>
+    <button mat-raised-button color="primary" (click)="dialogRef.close()">Close</button>
+  </ng-template>
+</div>
+
+<div *ngIf="data.myRole?.name === 'Witch'">
+  <mat-divider></mat-divider>
+  <p>Select a player to give the role card to:</p>
+
+  <mat-button-toggle-group class="m2" [(ngModel)]="data.witchInfo.selectedPlayerUUID">
+    <mat-button-toggle *ngFor="let player of data.witchInfo.playerList" [value]="player.uuid">
+      {{ player.name }}
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <div class="m2 buttonContainer">
+    <button mat-raised-button color="primary" (click)="witchAction()">Done</button>
+  </div>
+</div>
+
+<div *ngIf="data.myRole?.name === 'Fortune teller'">
+  <p>Players, who have performed an action this round:</p>
+  <mat-list>
+    <mat-list-item *ngFor="let player of data.fortuneTellerInfo?.actionPlayers">
+      {{player.name}}
+    </mat-list-item>
+  </mat-list>
+
+  <div class="m2 buttonContainer">
+    <button mat-stroked-button color="primary" (click)="close()">Done</button>
+  </div>
+</div>

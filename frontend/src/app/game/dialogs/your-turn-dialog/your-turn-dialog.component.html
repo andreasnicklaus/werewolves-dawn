@@ -1,1 +1,239 @@
-<p>your-turn-dialog works!</p>
+<h1 mat-dialog-title>Your turn, {{ data.role.name | titlecase }}</h1>
+<ng-container
+  mat-dialog-content
+  *ngIf="data.role.order == '-'; then noActivity; else activity"
+></ng-container>
+
+<ng-template #noActivity>
+  <p>Your role has no activity during the night.</p>
+  <button mat-raised-button color="primary" (click)="close()">Done</button>
+</ng-template>
+
+<ng-template #activity>
+  <p>Your role does have this activity: {{ data.role.description }}</p>
+
+  <!--  Warden  -->
+  <div *ngIf="data.role.name === 'Warden'">
+    <mat-button-toggle-group [(ngModel)]="selectedPlayerUUID" [value]="gs.getOwnPlayerInfo()?.uuid" class="m2">
+      <mat-button-toggle *ngFor="let player of data.game.playerList" [value]="player.uuid">
+        {{ player.name }}
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+
+    <mat-divider></mat-divider>
+
+    <div class="m2 buttonContainer">
+      <button mat-raised-button color="primary" (click)="wardenAction()">Done</button>
+      <button mat-stroked-button color="primary" (click)="close()">Skip</button>
+    </div>
+  </div>
+
+  <!--  Werewolf  -->
+  <div *ngIf="data.role.name === 'Werewolf'">
+    The other werewolves are:
+    <mat-list>
+      <mat-list-item *ngFor="let player of getOtherWerewolves()">
+        {{ player.name }}
+      </mat-list-item>
+    </mat-list>
+
+    <mat-divider *ngIf="isLonelyWerewolf()"></mat-divider>
+
+    <div *ngIf="isLonelyWerewolf()" class="m2">
+      <p>You are a lonely wolf. You can look at one middle card:</p>
+
+      <mat-card *ngFor="let item of [].constructor(data.game.numberofMiddleRoles); let i = index">
+        Middle card {{ i }}
+        <mat-card-actions>
+          <button mat-stroked-button color="primary" (click)="turnMiddleCard(i, false)">
+            Turn over
+          </button>
+        </mat-card-actions>
+      </mat-card>
+
+      <div class="m2 buttonContainer">
+        <button mat-stroked-button color="primary" (click)="close()">Skip</button>
+      </div>
+    </div>
+  </div>
+
+  <!--  Alpha wolf  -->
+  <div *ngIf="data.role.name === 'Alpha wolf'">
+    The other werewolves are:
+    <mat-list  class="m2">
+      <mat-list-item *ngFor="let player of getOtherWerewolves()">
+        {{ player.name }}
+      </mat-list-item>
+    </mat-list>
+
+    <mat-divider *ngIf="isLonelyWerewolf()"></mat-divider>
+
+    <div *ngIf="isLonelyWerewolf()" class="m2">
+      <p>You are a lonely wolf. You can look at one middle card:</p>
+      <mat-card *ngFor="let item of [].constructor(data.game.numberofMiddleRoles); let i = index">
+        Middle card {{ i }}
+        <mat-card-actions>
+          <button mat-stroked-button color="primary" (click)="turnMiddleCard(i, false)">
+            Turn over
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div *ngIf="getUnprotectedNonWerewolves(); else noAlphaWolfOptions" class="m2">
+      <p>Turn another non-werewolf player into a werewolf:  {{getUnprotectedNonWerewolves() | json}}</p>
+      <mat-button-toggle-group [(ngModel)]="selectedPlayerUUID">
+        <mat-button-toggle *ngFor="let player of getUnprotectedNonWerewolves()" [value]="player.uuid">
+        {{ player.name }}
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+
+    <ng-template #noAlphaWolfOptions>
+      <mat-card class="m2">There is no player option to turn into a werewolf.</mat-card>
+    </ng-template>
+
+    <mat-divider></mat-divider>
+
+    <div class="m2 buttonContainer">
+      <button mat-raised-button color="primary" [disabled]="!selectedPlayerUUID" (click)="alphawolfAction()">Finish</button>
+      <button mat-stroked-button color="primary" (click)="close()">Skip</button>
+    </div>
+  </div>
+
+  <!--  Seeing wolf  -->
+  <div *ngIf="data.role.name === 'Seeing wolf'">
+    The other werewolves are:
+    <mat-list class="m2">
+      <mat-list-item *ngFor="let player of getOtherWerewolves()">
+        {{ player.name }}
+      </mat-list-item>
+    </mat-list>
+
+    <mat-divider *ngIf="isLonelyWerewolf()"></mat-divider>
+
+    <div *ngIf="isLonelyWerewolf()" class="m2">
+      <p>You are a lonely wolf. You can look at one middle card:</p>
+      <mat-card *ngFor="let item of [].constructor(data.game.numberofMiddleRoles); let i = index">
+        Middle card {{ i }}
+        <mat-card-actions>
+          <button mat-stroked-button color="primary" (click)="turnMiddleCard(i, false)">
+            Turn over
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <mat-button-toggle-group [(ngModel)]="selectedPlayerUUID" class="m2">
+      <mat-button-toggle *ngFor="let player of getUnprotectedNonWerewolves()" [value]="player.uuid">
+        {{ player.name }}
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+
+    <mat-divider></mat-divider>
+
+    <div class="m2 buttonContainer">
+      <button mat-raised-button color="primary" (click)="seeingwolfAction()">Done</button>
+      <button mat-stroked-button color="primary" (click)="close()">Skip</button>
+    </div>
+  </div>
+
+  <!--  Ghost buster  -->
+  <div *ngIf="data.role.name === 'Ghost buster'">
+    <mat-button-toggle-group class="m2" [(ngModel)]="selectedPlayerUUID">
+      <mat-button-toggle *ngFor="let player of data.game.playerList" [value]="player.uuid">
+        {{ player.name }}
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+
+    <mat-divider></mat-divider>
+
+    <div class="m2 buttonContainer">
+      <button mat-raised-button color="primary" (click)="ghostBusterAction()">Done</button>
+      <button mat-stroked-button color="primary" (click)="close()">Skip</button>
+    </div>
+  </div>
+
+  <!--  Young seer  -->
+  <div *ngIf="data.role.name === 'Young seer'">
+    <mat-grid-list [cols]="data.game.numberofMiddleRoles" rowHeight="2:1">
+      <mat-grid-tile *ngFor="let item of [].constructor(data.game.numberofMiddleRoles); let i = index">
+        <mat-card>
+          Middle card {{ i }}
+          <mat-card-actions>
+            <button mat-stroked-button color="primary" (click)="youngSeerAction(i)">Turn over</button>
+          </mat-card-actions>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <div class="m2 buttonContainer">
+      <button mat-stroked-button color="primary" (click)="close()">Skip</button>
+    </div>
+  </div>
+
+  <!--  Witch  -->
+  <div *ngIf="data.role.name === 'Witch'">
+    <mat-card *ngFor="let item of [].constructor(data.game.numberofMiddleRoles); let i = index">
+      Middle card {{ i }}
+      <mat-card-actions>
+        <button mat-stroked-button color="primary" (click)="turnMiddleCard(i, true)">
+          Turn over
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <div class="m2 buttonContainer">
+      <button mat-stroked-button color="primary" (click)="close()">Skip</button>
+    </div>
+  </div>
+
+  <!--  Idiot  -->
+  <div *ngIf="data.role.name === 'Idiot'">
+    <p>Choose a direction to rotate all player cards:</p>
+
+    <div class="m2 buttonContainer">
+      <button mat-raised-button color="primary" (click)="idiotAction(true)">Rotate left</button>
+      <button mat-stroked-button color="primary" (click)="close()">Skip</button>
+      <button mat-raised-button color="primary" (click)="idiotAction(false)">Rotate Right</button>
+    </div>
+
+  </div>
+
+  <!--  Fortune teller  -->
+  <div *ngIf="data.role.name === 'Fortune teller'">
+    <div class="m2 buttonContainer">
+      <button mat-stroked-button color="primary" (click)="close()">Skip</button>
+      <button mat-raised-button color="primary" (click)="fortuneTellerAction()">Find out</button>
+    </div>
+  </div>
+
+  <!--  Scout  -->
+  <div *ngIf="data.role.name === 'Scout'">
+    <mat-card *ngFor="let item of [].constructor(data.game.numberofMiddleRoles); let i = index">
+      Middle card {{ i }}
+      <mat-card-actions>
+        <button mat-stroked-button color="primary" (click)="scoutAction(i)">
+          Turn over
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <mat-divider></mat-divider>
+
+    <div class="m2 buttonContainer">
+      <button mat-stroked-button color="primary" (click)="close()">Skip</button>
+    </div>
+  </div>
+
+  <!--  Curator  -->
+  <div *ngIf="data.role.name === 'Curator'">
+    <p>Why didn't you listen? I told you not to use this role? smh</p>
+    <button mat-raised-button color="primary" (click)="close()">Close</button>
+  </div>
+
+</ng-template>

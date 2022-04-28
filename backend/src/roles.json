@@ -1,0 +1,4 @@
+[
+  {"name": "guardian", "order": 0, "friendly": true},
+  {"name": "werewolf", "order": 1, "friendly": false}
+]

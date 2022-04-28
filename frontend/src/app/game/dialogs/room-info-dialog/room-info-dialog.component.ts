@@ -19,7 +19,9 @@ export class RoomInfoDialogComponent implements OnInit {
 
   sendCopiedMessage() {
     if (this.data.roomCode) this.ms.addMessage("Copied to clipboard")
-    else this.ms.addMessage("Cannot copy. Roomcode not defined", "warn")
+    else this.ms.addMessage("Cannot copy. Roomcode not defined")
+
+    this.dialogRef.close()
   }
 
 }
