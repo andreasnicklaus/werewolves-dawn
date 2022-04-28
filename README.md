@@ -1,28 +1,27 @@
-# Werewolves - Dawn
+<p style="font-size: 4em; text-align: center; font-weight: bold; text-decoration: underline;">Werwolves - Dawn</p>
 
-- [Werewolves - Dawn](#werewolves---dawn)
-  - [Upcomimg Features](#upcomimg-features)
-  - [Setting](#setting)
-  - [What you will need](#what-you-will-need)
-  - [How to play](#how-to-play)
-    - [Set up](#set-up)
-    - [Game flow](#game-flow)
-    - [End of the round](#end-of-the-round)
-  - [Roles](#roles)
-  - [Scenarios](#scenarios)
-  - [Run it yourself](#run-it-yourself)
-    - [Native Run](#native-run)
-    - [Docker-compose](#docker-compose)
+- [Upcoming Features](#upcoming-features)
+- [Setting](#setting)
+- [What you will need](#what-you-will-need)
+- [How to play](#how-to-play)
+  - [Set up](#set-up)
+  - [Game flow](#game-flow)
+  - [End of the round](#end-of-the-round)
+- [Roles](#roles)
+- [Scenarios](#scenarios)
+- [Run it yourself](#run-it-yourself)
+  - [Native Run](#native-run)
+  - [Docker-compose](#docker-compose)
 
 
-## Upcomimg Features
+# Upcoming Features
 - Control for the time to complete / wait for the player's action at night
   - Time settings: Normal (10 seconds), Long (15 seconds) Extra long (20 seconds)
   - Multiplication settings: Extra time for simultaneous actions
-    - Normal: $\textrm{number of Players} * \textrm{wait time}$
-    - Balanced: $\sqrt{\textrm{number of Players}} * \textrm{wait time}$
-    - Quick: $\textrm{wait time}$
-## Setting
+    - Normal: number of Players * wait time
+    - Balanced: &radic;<span style="text-decoration: overline">number of players</span> * wait time
+    - Quick: wait time
+# Setting
 
 **Better keep one eye open tonight!**
 
@@ -34,7 +33,7 @@ After some panicked hours of discussion, you have made a foolproof plan: Tonight
 
 No one thinks of it, only the village's youngest asks: "But if I am awake tonight, won't you all think that I might be a werewolf?". He's right. Will you be able to sleep or will you try to find the evil and risk your own life in the process?
 
-## What you will need
+# What you will need
 
 | What you will need   |   |
 |---|---|
@@ -42,21 +41,21 @@ No one thinks of it, only the village's youngest asks: "But if I am awake tonigh
 | Location and Communication  | In order to play Werewolves - Dawn like it is intended to and make it fun for all players, you will have to be able to talk to each other. You can either be in the same room looking at your own screen or play in a online meeting. Don't have a meeting yet? Try [Zoom](https://zoom.us), [Google Meet](https://meet.google.com/) or [Join](https://www.join.me/). **Attention**: This game is based on deception. If you can see each other doing something you might not want to be seen doing, you will give your role away and not have fun. It might be useful to <u>turn your camera and microphone off</u> during the round's night and turn it on again during the debate.  |
 | Knowledge | Just like all of these games, Werewolves - Dawn is more fun when you play with people, who know the game's nicks just as well as you do. You can play with new players, but you should explain the roles and game flow in detail beforehand. See the chapters 'How to play' and 'roles' above.  |
 
-## How to play
+# How to play
 
-### Set up
+## Set up
 Before you can start a game, you have to choose the roles you want to play with. You should always have more role cards than players in the game. This way, each round has the added mystery of which roles have not been dealt.
 
 You can find some suggested scenarios and the required roles in the 'scenarios' chapter.
 
-### Game flow
+## Game flow
 Each round of Werewolves - Dawn has the same game flow:
 
 1. At the beginning of each round, all players 'close their eyes' so they cannot see the moves of the other players. In the online game, this is not necessary, but experienced players might be able to recognize your physical body movements while clicking and reading. You might resolve this problem is some other way (turning off your camera, putting your head in your hands etc).
 2. During the night, each player plays out the action of his/her role. You can read the specific actions of each role in the 'roles' chapter.
 3. After the village has slept through the night, all alive players can gather and debate who to vote out of the game. For this you have 5 minutes time (experienced players can lower this time limit). This completes the round and the winning players receive points for the survival of their species.
 
-### End of the round
+## End of the round
 The winners of each round are determined by the player who has been voted out at the village council. This allows for 3 possible scenarios.
 
 - A werewolf has been voted out: The danger for your group has been averted and the villagers win.
@@ -66,7 +65,7 @@ The winners of each round are determined by the player who has been voted out at
 
 Each winning player receives 1 point. The player with the most points after the game wins it all!
 
-## Roles
+# Roles
 
 | Role | Team | Order | Description |
 |---|---|---|---|
@@ -86,7 +85,7 @@ Each winning player receives 1 point. The player with the most points after the 
 | Villager | -  | Villager | No special power. This role is easy to take as cover for werewolves, so be careful not to incriminate yourself |
 | Sleeping werwolf | -  | Werewolf | Will be visible as a werewolf to other werewolves, but does not wake at night |
 
-## Scenarios
+# Scenarios
 
 | Scenario | Player | Roles |
 |---|---|---|
@@ -96,12 +95,12 @@ Each winning player receives 1 point. The player with the most points after the 
 | Unsteady alliances  | 3-7  | Alpha wolf, Witch, Curator, Ghost buster, Scout, Idiot + Fortune teller + Warden + Young Seer + Seeing wolf  |
 | Anarchy  | 3-10  | Randomly take 3 role cards + 1 cards per player (take maximum 3 werewolf cards) |
 
-## Run it yourself
+# Run it yourself
 
 In order to use it yourself you can either run it natively using like [this](#native-run)
 or do it via [Docker-compose](https://docs.docker.com/compose/) like [this](#docker-compose).
 
-### Native Run
+## Native Run
 
 Install and run the backend:
 ```bash
@@ -117,7 +116,7 @@ npm ci
 npm start
 ```
 
-### Docker-compose
+## Docker-compose
 
 Using docker and docker-compose you can start the game with this command:
 ```bash
