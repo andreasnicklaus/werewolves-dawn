@@ -1,0 +1,17 @@
+// TODO: create
+version: '3'
+services:
+
+  backend:
+    build:
+      context: ./backend
+    environment:
+      - PORT=8080
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - 82:4200
+    depends_on:
+      - backend

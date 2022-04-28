@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>Roles</h1>
+<div mat-dialog-content>
+  <mat-selection-list #roleSelectionList>
+    <mat-list-option *ngFor="let role of data.roles">
+      {{ role.name }}
+    </mat-list-option>
+  </mat-selection-list>
+  <button
+    mat-stroked-button
+    color="primary"
+    (click)="setRoles(roleSelectionList.selectedOptions.selected)"
+  >Save roles</button>
+
+  <button mat-raised-button color="primary" (click)="startGame()">
+    Start game
+  </button>
+</div>

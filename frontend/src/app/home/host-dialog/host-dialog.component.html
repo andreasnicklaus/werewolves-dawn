@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>Host a new game</h1>
+<div mat-dialog-container>
+  <p>In order to host a new game, you have to give yourself an identifiable name.</p>
+  <mat-form-field>
+    <mat-label>Your name</mat-label>
+    <input matInput [(ngModel)]="data.name"/>
+  </mat-form-field>
+</div>
+<mat-dialog-actions>
+  <button mat-stroked-button (click)="closeDialog()" color="primary">Cancel</button>
+  <button mat-raised-button (click)="start()" color="primary">Go</button>
+</mat-dialog-actions>
