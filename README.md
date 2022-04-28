@@ -1,27 +1,34 @@
-<h1 align="center">Werwolves - Dawn</h1> <!-- omit in toc -->
+<h1 align="center">Werwolves - Dawn 🐺</h1> <!-- omit in toc -->
 
-- [Upcoming Features](#upcoming-features)
-- [Setting](#setting)
-- [What you will need](#what-you-will-need)
-- [How to play](#how-to-play)
+<p align="center">
+  <a href="http://werewolf-dawn.andreasnicklaus.de">Play ⏩</a> •
+  <a href="https://www.ravensburger.de/produkte/spiele/erwachsenenspiele/werwoelfe-morgengrauen-26729/index.html">The Original 🐺</a> •
+  <a href="http://andreasnicklaus.de">Me 😉</a>
+</p>
+
+---
+
+- [Upcoming Features 🔜](#upcoming-features-)
+- [Setting 🏞️](#setting-️)
+- [What you will need 🏹](#what-you-will-need-)
+- [How to play 📏](#how-to-play-)
   - [Set up](#set-up)
   - [Game flow](#game-flow)
   - [End of the round](#end-of-the-round)
-- [Roles](#roles)
-- [Scenarios](#scenarios)
-- [Run it yourself](#run-it-yourself)
+- [Roles 🎭](#roles-)
+- [Scenarios 🧾](#scenarios-)
+- [Run it yourself 🪄](#run-it-yourself-)
   - [Native Run](#native-run)
   - [Docker-compose](#docker-compose)
 
-
-# Upcoming Features
+# Upcoming Features 🔜
 - Control for the time to complete / wait for the player's action at night
   - Time settings: Normal (10 seconds), Long (15 seconds) Extra long (20 seconds)
   - Multiplication settings: Extra time for simultaneous actions
     - Normal: number of Players * wait time
     - Balanced: <img src="https://render.githubusercontent.com/render/math?math=\sqrt{\textrm{number of Players}}"> * wait time
     - Quick: wait time
-# Setting
+# Setting 🏞️
 
 **Better keep one eye open tonight!**
 
@@ -33,7 +40,7 @@ After some panicked hours of discussion, you have made a foolproof plan: Tonight
 
 No one thinks of it, only the village's youngest asks: "But if I am awake tonight, won't you all think that I might be a werewolf?". He's right. Will you be able to sleep or will you try to find the evil and risk your own life in the process?
 
-# What you will need
+# What you will need 🏹
 
 | What you will need   |   |
 |---|---|
@@ -41,7 +48,7 @@ No one thinks of it, only the village's youngest asks: "But if I am awake tonigh
 | Location and Communication  | In order to play Werewolves - Dawn like it is intended to and make it fun for all players, you will have to be able to talk to each other. You can either be in the same room looking at your own screen or play in a online meeting. Don't have a meeting yet? Try [Zoom](https://zoom.us), [Google Meet](https://meet.google.com/) or [Join](https://www.join.me/). **Attention**: This game is based on deception. If you can see each other doing something you might not want to be seen doing, you will give your role away and not have fun. It might be useful to <u>turn your camera and microphone off</u> during the round's night and turn it on again during the debate.  |
 | Knowledge | Just like all of these games, Werewolves - Dawn is more fun when you play with people, who know the game's nicks just as well as you do. You can play with new players, but you should explain the roles and game flow in detail beforehand. See the chapters 'How to play' and 'roles' above.  |
 
-# How to play
+# How to play 📏
 
 ## Set up
 Before you can start a game, you have to choose the roles you want to play with. You should always have more role cards than players in the game. This way, each round has the added mystery of which roles have not been dealt.
@@ -65,7 +72,7 @@ The winners of each round are determined by the player who has been voted out at
 
 Each winning player receives 1 point. The player with the most points after the game wins it all!
 
-# Roles
+# Roles 🎭
 
 | Role | Team | Order | Description |
 |---|---|---|---|
@@ -85,7 +92,7 @@ Each winning player receives 1 point. The player with the most points after the 
 | Villager | -  | Villager | No special power. This role is easy to take as cover for werewolves, so be careful not to incriminate yourself |
 | Sleeping werwolf | -  | Werewolf | Will be visible as a werewolf to other werewolves, but does not wake at night |
 
-# Scenarios
+# Scenarios 🧾
 
 | Scenario | Player | Roles |
 |---|---|---|
@@ -95,7 +102,7 @@ Each winning player receives 1 point. The player with the most points after the 
 | Unsteady alliances  | 3-7  | Alpha wolf, Witch, Curator, Ghost buster, Scout, Idiot + Fortune teller + Warden + Young Seer + Seeing wolf  |
 | Anarchy  | 3-10  | Randomly take 3 role cards + 1 cards per player (take maximum 3 werewolf cards) |
 
-# Run it yourself
+# Run it yourself 🪄
 
 In order to use it yourself you can either run it natively using like [this](#native-run)
 or do it via [Docker-compose](https://docs.docker.com/compose/) like [this](#docker-compose).
