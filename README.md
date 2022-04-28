@@ -1,4 +1,4 @@
-# Werwolves - Dawn <!-- omit in toc -->
+<h1 align="center">Werwolves - Dawn</h1> <!-- omit in toc -->
 
 - [Upcoming Features](#upcoming-features)
 - [Setting](#setting)
