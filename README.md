@@ -28,6 +28,8 @@
     - Normal: number of Players * wait time
     - Balanced: <img src="https://render.githubusercontent.com/render/math?math=\sqrt{\textrm{number of Players}}"> * wait time
     - Quick: wait time
+  
+
 # Setting 🏞️
 
 **Better keep one eye open tonight!**
