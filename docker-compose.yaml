@@ -6,11 +6,19 @@ services:
       context: ./backend
     ports:
       - 8081:8081
+    networks:
+      - nginx_proxy
 
   frontend:
     build:
       context: ./frontend
     ports:
-      - 83:80
+      - 93:80
     depends_on:
       - backend
+    networks:
+      - nginx_proxy
+
+networks:
+  nginx_proxy:
+    external: true

@@ -1,9 +1,9 @@
 <h1 align="center">Werwolves - Dawn 🐺</h1> <!-- omit in toc -->
 
 <p align="center">
-  <a href="http://werewolves.andreasnicklaus.de">Play ⏩</a> •
+  <a href="https://werewolves.andreasnicklaus.de">Play ⏩</a> •
   <a href="https://www.ravensburger.de/produkte/spiele/erwachsenenspiele/werwoelfe-morgengrauen-26729/index.html">The Original 🐺</a> •
-  <a href="http://andreasnicklaus.de">Me 😉</a>
+  <a href="https://andreasnicklaus.de">Me 😉</a>
 </p>
 
 ---
