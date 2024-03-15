@@ -5,20 +5,44 @@
 </div>
 
 <ng-template #gameInitiated>
-
   <!-- Menu buttons -->
   <div class="m2 flex">
-    <button mat-stroked-button color="primary" (click)="openSettings()" class="spaced"
-      matBadge="!" matBadgeColor="warn" [matBadgeHidden]="numberOfRolesIsOk()">
+    <button
+      mat-stroked-button
+      color="primary"
+      (click)="openSettings()"
+      class="spaced"
+      matBadge="!"
+      matBadgeColor="warn"
+      [matBadgeHidden]="numberOfRolesIsOk()"
+    >
       Settings
     </button>
-    <button mat-stroked-button color="primary" (click)="openRoomInfo()" class="spaced">Room Info</button>
-
-    <span [matTooltip]="numberOfRolesIsOk()? '': 'The number of selected roles does not match: number of players + 2'">
-      <button mat-raised-button color="primary" (click)="gameService.startGame()" class="spaced"
-      [disabled]="!numberOfRolesIsOk()">
-      Start new round
+    <button
+      mat-stroked-button
+      color="primary"
+      (click)="openRoomInfo()"
+      class="spaced"
+    >
+      Room Info
     </button>
+
+    <span
+      [matTooltip]="
+        numberOfRolesIsOk()
+          ? ''
+          : 'The number of selected roles does not match: number of players + 2'
+      "
+    >
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="gameService.startGame()"
+        class="spaced"
+        [disabled]="!numberOfRolesIsOk()"
+      >
+        Start new round
+      </button>
     </span>
   </div>
 
@@ -32,19 +56,25 @@
           <!-- <mat-card-subtitle>{{ player.uuid }}</mat-card-subtitle> -->
         </mat-card-header>
         <mat-card-content *ngIf="player.role" class="flex">
-
           <b *ngIf="gameService.myName === player.name; else notMe">
-            {{ player.role?.name }}
+            {{ player.role.name }}
           </b>
 
           <ng-template #notMe>
-            <p>{{ player.role?.name }}</p>
+            <p>{{ player.role.name }}</p>
           </ng-template>
 
-          <mat-icon color="primary" [matTooltip]="player.role?.description || ''">info</mat-icon>
+          <mat-icon color="primary" [matTooltip]="player.role.description || ''"
+            >info</mat-icon
+          >
         </mat-card-content>
 
-        <mat-icon *ngIf="player.protectedByWarden" color="accent" matTooltip="This player has been protected by the warden.">shield</mat-icon>
+        <mat-icon
+          *ngIf="player.protectedByWarden"
+          color="accent"
+          matTooltip="This player has been protected by the warden."
+          >shield</mat-icon
+        >
       </mat-card>
     </div>
   </div>
@@ -55,22 +85,38 @@
   <div class="m2">
     <h1>Unused Roles</h1>
     <div id="middleCards">
-      <mat-card *ngFor="let _ of [].constructor(game?.numberofMiddleRoles); let i = index" class="m2">
-        <ng-container *ngIf="getMiddleRoleAtIndex(i); then middleRoleUncovered; else middleRoleCovered"></ng-container>
+      <mat-card
+        *ngFor="
+          let _ of [].constructor(game?.numberofMiddleRoles);
+          let i = index
+        "
+        class="m2"
+      >
+        <ng-container
+          *ngIf="
+            getMiddleRoleAtIndex(i);
+            then middleRoleUncovered;
+            else middleRoleCovered
+          "
+        ></ng-container>
 
         <ng-template #middleRoleUncovered>
           <mat-card-header>
             <mat-card-title>Uncovered middle role</mat-card-title>
-            <mat-card-subtitle>{{getMiddleRoleAtIndex(i)?.name}}</mat-card-subtitle>
+            <mat-card-subtitle>{{
+              getMiddleRoleAtIndex(i)?.name
+            }}</mat-card-subtitle>
           </mat-card-header>
-          <mat-card-content>{{getMiddleRoleAtIndex(i)?.description}}</mat-card-content>
+          <mat-card-content>{{
+            getMiddleRoleAtIndex(i)?.description
+          }}</mat-card-content>
         </ng-template>
 
         <ng-template #middleRoleCovered>
           <mat-card-header>
             <mat-card-title>Covered middle role</mat-card-title>
           </mat-card-header>
-          <mat-card-content>{{i}}</mat-card-content>
+          <mat-card-content>{{ i }}</mat-card-content>
         </ng-template>
       </mat-card>
     </div>

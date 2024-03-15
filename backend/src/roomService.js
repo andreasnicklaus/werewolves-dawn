@@ -1,5 +1,5 @@
-import { v4 as uuidv4 } from "uuid";
-import { WereWolfGame } from "./werewolf-game.js";
+const { v4: uuidv4 } = require("uuid");
+const { WereWolfGame } = require("./werewolf-game.js");
 
 let rooms = {}
 
@@ -74,7 +74,7 @@ function sendNextPlayerMessages(roomCode) {
     }
 }
 
-export function handleMessage(socket, uuid, data) {
+module.exports.handleMessage = function (socket, uuid, data) {
     data = JSON.parse(data)
     console.log("Received message", data)
 
@@ -144,7 +144,7 @@ export function handleMessage(socket, uuid, data) {
     if (roomCode) broadCastPlayerInfo(roomCode)
 }
 
-export function handleClose(socket, uuid) {
+module.exports.handleClose = function (socket, uuid) {
     const roomCode = getRoomCode(uuid);
     leaveRoom(roomCode, uuid)
 }

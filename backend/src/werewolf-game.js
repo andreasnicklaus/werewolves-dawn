@@ -1,4 +1,4 @@
-export class WereWolfGame {
+module.exports.WereWolfGame = class {
     // TEMPLATE {uuid: "someCharacterCombination",
     // name: "MyName",
     // role: {name: "Warden", order: 0, friendly: true}
