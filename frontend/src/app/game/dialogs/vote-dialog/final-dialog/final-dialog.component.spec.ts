@@ -13,12 +13,14 @@ describe('FinalDialogComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppTestingModule],
-      declarations: [ FinalDialogComponent ],
+      declarations: [FinalDialogComponent],
       providers: [
-        ...dialogTestingProviders({ winnerFriendly: false, roleAfterTheRound: {} }),
+        ...dialogTestingProviders({
+          winnerFriendly: false,
+          roleAfterTheRound: {},
+        }),
       ],
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {

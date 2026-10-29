@@ -14,13 +14,12 @@ describe('HostDialogComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppTestingModule],
-      declarations: [ HostDialogComponent ],
+      declarations: [HostDialogComponent],
       providers: [
         ...dialogTestingProviders({ name: '' }),
         gameServiceTestingProvider(),
       ],
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {

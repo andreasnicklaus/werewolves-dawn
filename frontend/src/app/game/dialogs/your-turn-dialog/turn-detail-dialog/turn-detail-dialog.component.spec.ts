@@ -14,13 +14,9 @@ describe('TurnDetailDialogComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppTestingModule],
-      declarations: [ TurnDetailDialogComponent ],
-      providers: [
-        ...dialogTestingProviders({}),
-        gameServiceTestingProvider(),
-      ],
-    })
-    .compileComponents();
+      declarations: [TurnDetailDialogComponent],
+      providers: [...dialogTestingProviders({}), gameServiceTestingProvider()],
+    }).compileComponents();
   });
 
   beforeEach(() => {

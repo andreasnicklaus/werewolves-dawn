@@ -14,13 +14,12 @@ describe('VoteDialogComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppTestingModule],
-      declarations: [ VoteDialogComponent ],
+      declarations: [VoteDialogComponent],
       providers: [
         ...dialogTestingProviders({ game: { playerList: [] } }),
         gameServiceTestingProvider(),
       ],
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {

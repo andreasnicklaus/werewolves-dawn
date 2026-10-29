@@ -9,9 +9,7 @@ describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppTestingModule],
-      declarations: [
-        AppComponent
-      ],
+      declarations: [AppComponent],
       providers: [messageServiceTestingProvider()],
     }).compileComponents();
   });
@@ -32,6 +30,8 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('#pageTitle')?.textContent).toContain('Werewolves - Dawn');
+    expect(compiled.querySelector('#pageTitle')?.textContent).toContain(
+      'Werewolves - Dawn',
+    );
   });
 });

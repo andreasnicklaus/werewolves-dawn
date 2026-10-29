@@ -14,13 +14,12 @@ describe('JoinDialogComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppTestingModule],
-      declarations: [ JoinDialogComponent ],
+      declarations: [JoinDialogComponent],
       providers: [
         ...dialogTestingProviders({ name: '', roomCode: '' }),
         gameServiceTestingProvider(),
       ],
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {

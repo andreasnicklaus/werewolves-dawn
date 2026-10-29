@@ -14,13 +14,12 @@ describe('RoomInfoDialogComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppTestingModule],
-      declarations: [ RoomInfoDialogComponent ],
+      declarations: [RoomInfoDialogComponent],
       providers: [
         ...dialogTestingProviders({ roomCode: '' }),
         messageServiceTestingProvider(),
       ],
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {

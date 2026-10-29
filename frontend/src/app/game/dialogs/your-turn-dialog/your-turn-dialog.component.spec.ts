@@ -15,7 +15,7 @@ describe('YourTurnDialogComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppTestingModule],
-      declarations: [ YourTurnDialogComponent ],
+      declarations: [YourTurnDialogComponent],
       providers: [
         ...dialogTestingProviders({
           role: { name: 'Villager', order: '-', description: '' },
@@ -24,8 +24,7 @@ describe('YourTurnDialogComponent', () => {
         gameServiceTestingProvider(),
         messageServiceTestingProvider(),
       ],
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {

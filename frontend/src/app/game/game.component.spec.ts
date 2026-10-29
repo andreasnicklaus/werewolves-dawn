@@ -13,10 +13,9 @@ describe('GameComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppTestingModule],
-      declarations: [ GameComponent ],
-      providers: [gameServiceTestingProvider()]
-    })
-    .compileComponents();
+      declarations: [GameComponent],
+      providers: [gameServiceTestingProvider()],
+    }).compileComponents();
   });
 
   beforeEach(() => {

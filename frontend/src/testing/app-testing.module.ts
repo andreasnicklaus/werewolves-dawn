@@ -7,7 +7,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef, MatDialogState } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+  MatDialogRef,
+  MatDialogState,
+} from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -82,7 +87,9 @@ export function gameServiceTestingProvider(): Provider {
       startGame: jasmine.createSpy('startGame'),
       setupRoles: jasmine.createSpy('setupRoles'),
       getOwnRole: jasmine.createSpy('getOwnRole'),
-      getOwnPlayerInfo: jasmine.createSpy('getOwnPlayerInfo').and.returnValue(undefined),
+      getOwnPlayerInfo: jasmine
+        .createSpy('getOwnPlayerInfo')
+        .and.returnValue(undefined),
     },
   };
 }
