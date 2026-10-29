@@ -1,6 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TurnDetailDialogComponent } from './turn-detail-dialog.component';
+import {
+  AppTestingModule,
+  dialogTestingProviders,
+  gameServiceTestingProvider,
+} from '../../../../../testing/app-testing.module';
 
 describe('TurnDetailDialogComponent', () => {
   let component: TurnDetailDialogComponent;
@@ -8,7 +13,12 @@ describe('TurnDetailDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TurnDetailDialogComponent ]
+      imports: [AppTestingModule],
+      declarations: [ TurnDetailDialogComponent ],
+      providers: [
+        ...dialogTestingProviders({}),
+        gameServiceTestingProvider(),
+      ],
     })
     .compileComponents();
   });

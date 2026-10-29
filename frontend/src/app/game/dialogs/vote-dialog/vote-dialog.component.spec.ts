@@ -1,6 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { VoteDialogComponent } from './vote-dialog.component';
+import {
+  AppTestingModule,
+  dialogTestingProviders,
+  gameServiceTestingProvider,
+} from '../../../../testing/app-testing.module';
 
 describe('VoteDialogComponent', () => {
   let component: VoteDialogComponent;
@@ -8,7 +13,12 @@ describe('VoteDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ VoteDialogComponent ]
+      imports: [AppTestingModule],
+      declarations: [ VoteDialogComponent ],
+      providers: [
+        ...dialogTestingProviders({ game: { playerList: [] } }),
+        gameServiceTestingProvider(),
+      ],
     })
     .compileComponents();
   });

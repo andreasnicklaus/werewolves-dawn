@@ -1,6 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RoomInfoDialogComponent } from './room-info-dialog.component';
+import {
+  AppTestingModule,
+  dialogTestingProviders,
+  messageServiceTestingProvider,
+} from '../../../../testing/app-testing.module';
 
 describe('RoomInfoDialogComponent', () => {
   let component: RoomInfoDialogComponent;
@@ -8,7 +13,12 @@ describe('RoomInfoDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RoomInfoDialogComponent ]
+      imports: [AppTestingModule],
+      declarations: [ RoomInfoDialogComponent ],
+      providers: [
+        ...dialogTestingProviders({ roomCode: '' }),
+        messageServiceTestingProvider(),
+      ],
     })
     .compileComponents();
   });

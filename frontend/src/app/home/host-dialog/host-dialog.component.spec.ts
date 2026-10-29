@@ -1,6 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HostDialogComponent } from './host-dialog.component';
+import {
+  AppTestingModule,
+  dialogTestingProviders,
+  gameServiceTestingProvider,
+} from '../../../testing/app-testing.module';
 
 describe('HostDialogComponent', () => {
   let component: HostDialogComponent;
@@ -8,7 +13,12 @@ describe('HostDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HostDialogComponent ]
+      imports: [AppTestingModule],
+      declarations: [ HostDialogComponent ],
+      providers: [
+        ...dialogTestingProviders({ name: '' }),
+        gameServiceTestingProvider(),
+      ],
     })
     .compileComponents();
   });

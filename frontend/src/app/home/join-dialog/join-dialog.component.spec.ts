@@ -1,6 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { JoinDialogComponent } from './join-dialog.component';
+import {
+  AppTestingModule,
+  dialogTestingProviders,
+  gameServiceTestingProvider,
+} from '../../../testing/app-testing.module';
 
 describe('JoinDialogComponent', () => {
   let component: JoinDialogComponent;
@@ -8,7 +13,12 @@ describe('JoinDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ JoinDialogComponent ]
+      imports: [AppTestingModule],
+      declarations: [ JoinDialogComponent ],
+      providers: [
+        ...dialogTestingProviders({ name: '', roomCode: '' }),
+        gameServiceTestingProvider(),
+      ],
     })
     .compileComponents();
   });

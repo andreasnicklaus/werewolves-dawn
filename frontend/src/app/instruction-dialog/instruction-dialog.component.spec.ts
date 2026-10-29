@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { InstructionDialogComponent } from './instruction-dialog.component';
+import {
+  AppTestingModule,
+  dialogTestingProviders,
+} from '../../testing/app-testing.module';
 
 describe('InstructionDialogComponent', () => {
   let component: InstructionDialogComponent;
@@ -8,7 +12,9 @@ describe('InstructionDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ InstructionDialogComponent ]
+      imports: [AppTestingModule],
+      declarations: [ InstructionDialogComponent ],
+      providers: [dialogTestingProviders({})],
     })
     .compileComponents();
   });
