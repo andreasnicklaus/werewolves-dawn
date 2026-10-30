@@ -1,19 +1,18 @@
 import { Injectable } from '@angular/core';
 import ROLES from 'src/app/data/roles.json';
-import {Role} from "../interfaces/role";
+import { Role } from '../interfaces/role';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RoleServiceService {
-
-  constructor() { }
+  constructor() {}
 
   getAllRoles(): Role[] {
-    return ROLES
+    return ROLES;
   }
 
-  getRoleInfo(roleName: string): Role|undefined {
-    return ROLES.find(role => role.name === roleName)
+  getRoleInfo(roleName: string): Role | undefined {
+    return ROLES.find((role) => role.name === roleName);
   }
 }

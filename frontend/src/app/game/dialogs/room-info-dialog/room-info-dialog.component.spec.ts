@@ -13,8 +13,8 @@ describe('RoomInfoDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppTestingModule],
-      declarations: [RoomInfoDialogComponent],
+      imports: [AppTestingModule, RoomInfoDialogComponent],
+
       providers: [
         ...dialogTestingProviders({ roomCode: '' }),
         messageServiceTestingProvider(),

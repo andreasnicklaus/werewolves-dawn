@@ -1,5 +1,5 @@
-import {Role} from "./role";
-import {Player} from "./player";
+import { Role } from './role';
+import { Player } from './player';
 
 export interface WerewolfGame {
   myName: string;

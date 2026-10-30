@@ -12,8 +12,8 @@ describe('FinalDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppTestingModule],
-      declarations: [FinalDialogComponent],
+      imports: [AppTestingModule, FinalDialogComponent],
+
       providers: [
         ...dialogTestingProviders({
           winnerFriendly: false,

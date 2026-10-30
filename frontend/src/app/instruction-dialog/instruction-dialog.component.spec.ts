@@ -12,8 +12,8 @@ describe('InstructionDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppTestingModule],
-      declarations: [InstructionDialogComponent],
+      imports: [AppTestingModule, InstructionDialogComponent],
+
       providers: [dialogTestingProviders({})],
     }).compileComponents();
   });
