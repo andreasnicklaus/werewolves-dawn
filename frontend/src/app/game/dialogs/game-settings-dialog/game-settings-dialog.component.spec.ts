@@ -13,8 +13,8 @@ describe('GameSettingsDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppTestingModule],
-      declarations: [GameSettingsDialogComponent],
+      imports: [AppTestingModule, GameSettingsDialogComponent],
+
       providers: [
         ...dialogTestingProviders({ roles: [], selectedRoles: [] }),
         gameServiceTestingProvider(),

@@ -8,8 +8,8 @@ import {
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppTestingModule],
-      declarations: [AppComponent],
+      imports: [AppTestingModule, AppComponent],
+
       providers: [messageServiceTestingProvider()],
     }).compileComponents();
   });

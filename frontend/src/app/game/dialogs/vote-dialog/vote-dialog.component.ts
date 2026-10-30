@@ -3,54 +3,59 @@ import { FinalDialogComponent } from './final-dialog/final-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { WerewolfGame } from './../../../interfaces/werewolf-game';
 import { GameService } from './../../../services/game.service';
-import { Component, Inject, OnInit, OnDestroy} from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
+import { SHARED_IMPORTS } from '../../../shared-imports';
+
 @Component({
+  standalone: true,
+  imports: [...SHARED_IMPORTS],
   selector: 'app-vote-dialog',
   templateUrl: './vote-dialog.component.html',
-  styleUrls: ['./vote-dialog.component.scss']
+  styleUrls: ['./vote-dialog.component.scss'],
 })
 export class VoteDialogComponent implements OnInit, OnDestroy {
   voteGiven = false;
-  votedFor = "";
+  votedFor = '';
 
   constructor(
     public dialogRef: MatDialogRef<VoteDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { game: WerewolfGame },
     private finalDialog: MatDialog,
-    private gs: GameService
-  ) { }
+    private gs: GameService,
+  ) {}
 
   ngOnInit(): void {
     this.gs.subscribe({
-      onWinnerDetermined: this.openFinalDialog
-    })
+      onWinnerDetermined: this.openFinalDialog,
+    });
   }
 
   ngOnDestroy(): void {
     this.gs.unsubscribe({
-      onWinnerDetermined: this.openFinalDialog
-    })
+      onWinnerDetermined: this.openFinalDialog,
+    });
   }
 
   getVoteOptions() {
     return this.data.game.playerList
-      .filter(player => player.uuid !== this.gs.getOwnPlayerInfo()?.uuid)
-      .map(player => ({ uuid: player.uuid, name: player.name }))
+      .filter((player) => player.uuid !== this.gs.getOwnPlayerInfo()?.uuid)
+      .map((player) => ({ uuid: player.uuid, name: player.name }));
   }
 
-  vote(uuid:string) {
-    console.log("Voting for", uuid)
-    this.gs.vote(uuid)
-    this.votedFor = this.gs.game?.playerList.find(player => player.uuid === uuid)?.name || ""
+  vote(uuid: string) {
+    console.log('Voting for', uuid);
+    this.gs.vote(uuid);
+    this.votedFor =
+      this.gs.game?.playerList.find((player) => player.uuid === uuid)?.name ||
+      '';
   }
 
-  openFinalDialog = (winnerFriendly: Boolean, roleAfterTheRound: Role) => {
+  openFinalDialog = (winnerFriendly: boolean, roleAfterTheRound: Role) => {
     this.finalDialog.open(FinalDialogComponent, {
-      data: {winnerFriendly, roleAfterTheRound}
-    })
-    this.dialogRef.close()
-  }
-
+      data: { winnerFriendly, roleAfterTheRound },
+    });
+    this.dialogRef.close();
+  };
 }

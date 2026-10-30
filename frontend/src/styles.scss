@@ -32,7 +32,7 @@ body {
 div .warn {
   font-weight: bold;
   padding: 16px;
-  background-color: rgba($color: #ff4848, $alpha: .5);
-  border: solid 2px rgba($color: #ff4848, $alpha: 1.0);
+  background-color: rgba($color: #ff4848, $alpha: 0.5);
+  border: solid 2px rgba($color: #ff4848, $alpha: 1);
   border-radius: 8px;
 }

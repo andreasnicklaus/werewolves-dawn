@@ -26,7 +26,9 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 import { RouterTestingModule } from '@angular/router/testing';
+import { InstructionsComponent } from '../app/instructions/instructions.component';
 import { GameService } from '../app/services/game.service';
 import { MessageService } from '../app/services/message.service';
 
@@ -54,11 +56,12 @@ const testImports = [
   MatTabsModule,
   MatToolbarModule,
   MatTooltipModule,
+  ClipboardModule,
 ];
 
 @NgModule({
-  imports: testImports,
-  exports: testImports,
+  imports: [...testImports, InstructionsComponent],
+  exports: [...testImports, InstructionsComponent],
 })
 export class AppTestingModule {}
 
