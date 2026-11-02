@@ -45,11 +45,11 @@ export class VoteDialogComponent implements OnInit, OnDestroy {
   }
 
   vote(uuid: string) {
-    console.log('Voting for', uuid);
     this.gs.vote(uuid);
     this.votedFor =
       this.gs.game?.playerList.find((player) => player.uuid === uuid)?.name ||
       '';
+    this.voteGiven = true;
   }
 
   openFinalDialog = (winnerFriendly: boolean, roleAfterTheRound: Role) => {

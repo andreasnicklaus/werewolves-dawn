@@ -1,16 +1,21 @@
-<h1 mat-dialog-title>Join a running game</h1>
+<h1 mat-dialog-title>Join a room</h1>
 <div mat-dialog-content>
-  <p>
-    In order to join a game, you have to give yourself an identifiable name and
-    specify the room code.
+  <p class="dialog-lede">
+    Enter your name and the room code your host shared.
   </p>
   <mat-form-field class="fullWidth">
     <mat-label>Your name</mat-label>
-    <input matInput [(ngModel)]="data.name" />
+    <input matInput [(ngModel)]="data.name" name="name" autocomplete="name" />
   </mat-form-field>
   <mat-form-field class="fullWidth">
     <mat-label>Room code</mat-label>
-    <input matInput [(ngModel)]="data.roomCode" />
+    <input
+      matInput
+      [(ngModel)]="data.roomCode"
+      name="roomCode"
+      autocomplete="off"
+      spellcheck="false"
+    />
   </mat-form-field>
 </div>
 <mat-dialog-actions align="end">
@@ -21,8 +26,8 @@
     mat-raised-button
     (click)="start()"
     color="primary"
-    [disabled]="!data.name || !data.roomCode"
+    [disabled]="!data.name.trim() || !data.roomCode.trim()"
   >
-    Go
+    Join game
   </button>
 </mat-dialog-actions>

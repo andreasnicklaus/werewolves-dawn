@@ -1,23 +1,15 @@
-/* You can add global styles to this file, and also import other style files */
-
-html,
-body {
-  height: 100%;
-}
-
-body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-}
+/* Existing global styles consolidated; tokens live in src/styles/tokens.scss */
 
 .m2 {
-  margin: 16px;
+  margin: var(--space-4, 16px);
 }
 
 .buttonContainer {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  gap: var(--space-2, 8px);
+  flex-wrap: wrap;
 }
 
 .fullWidth {
@@ -27,12 +19,67 @@ body {
 .gridCenter {
   display: grid;
   place-items: center;
+  min-height: 100%;
 }
 
 div .warn {
-  font-weight: bold;
-  padding: 16px;
-  background-color: rgba($color: #ff4848, $alpha: 0.5);
-  border: solid 2px rgba($color: #ff4848, $alpha: 1);
-  border-radius: 8px;
+  font-weight: 600;
+  padding: var(--space-4, 16px);
+  background-color: color-mix(
+    in srgb,
+    var(--color-danger) 16%,
+    var(--color-surface-1)
+  );
+  border: 1px solid color-mix(in srgb, var(--color-danger) 48%, transparent);
+  border-radius: var(--radius-sm, 6px);
+  color: var(--color-ink, #f2ede4);
+}
+
+/* Material toolbar override to atmospheric surface */
+mat-toolbar.mat-toolbar {
+  background-color: var(--color-surface-1, #121821);
+  color: var(--color-ink, #f2ede4);
+}
+
+/* Dialog + card atmospheric surfaces */
+.mat-mdc-dialog-container,
+.mat-mdc-dialog-surface {
+  background-color: var(--color-surface-1, #121821) !important;
+  color: var(--color-ink, #f2ede4) !important;
+}
+
+.mat-mdc-card {
+  background-color: var(--color-surface-1, #121821);
+  color: var(--color-ink, #f2ede4);
+  border: 1px solid var(--color-surface-3, #232d3d);
+}
+
+.mat-mdc-tab-group,
+.mat-mdc-tab-body-content {
+  background-color: var(--color-surface-1, #121821);
+  color: var(--color-ink, #f2ede4);
+}
+
+/* Material focus ring visibility */
+.mat-mdc-button-base:focus-visible,
+.mat-mdc-icon-button:focus-visible {
+  box-shadow: 0 0 0 2px var(--color-focus, #f0a03a);
+}
+
+input.mat-mdc-input-element:focus-visible {
+  box-shadow: none;
+  outline: none !important;
+}
+
+.mat-mdc-form-field,
+.mat-mdc-form-field * {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Field contrast (home inputs) */
+.mat-mdc-form-field .mdc-text-field:not(.mdc-text-field--focused) .mdc-notched-outline__leading,
+.mat-mdc-form-field .mdc-text-field:not(.mdc-text-field--focused) .mdc-notched-outline__notch,
+.mat-mdc-form-field .mdc-text-field:not(.mdc-text-field--focused) .mdc-notched-outline__trailing {
+  border-color: var(--color-field-border, #3a4455);
 }

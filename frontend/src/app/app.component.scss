@@ -1,7 +1,61 @@
-#pageTitle {
-  flex-grow: 1;
+.app-toolbar {
+  background-color: var(--color-surface-1, #121821);
+  color: var(--color-ink, #f2ede4);
+  border-bottom: 1px solid var(--color-surface-3, #232d3d);
+  padding-inline: var(--space-4, 16px);
+}
 
-  &:hover {
-    cursor: pointer;
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2, 8px);
+  text-decoration: none;
+  color: inherit;
+  font-weight: 500;
+  min-width: 0;
+
+  mat-icon {
+    color: var(--color-accent, #f0a03a);
+  }
+
+  span {
+    font-family: var(--font-display, var(--font-sans));
+    letter-spacing: -0.01em;
+    overflow-wrap: break-word;
+    min-width: 0;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-focus, #f0a03a);
+    outline-offset: 2px;
   }
 }
+
+.toolbar-spacer {
+  flex: 1 1 auto;
+}
+
+.icon-picker {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1, 4px);
+  margin-right: var(--space-2, 8px);
+}
+
+.icon-picker__btn--active {
+  color: var(--color-accent, #f0a03a);
+}
+
+@media (min-width: 60rem) {
+  .app-toolbar {
+    padding-inline: var(--space-6, 24px);
+  }
+}
+
+/* Hallmark floor (mirrored for component scope; global source: src/styles/tokens.scss) */
+:host { overflow-x: clip; }
+*:focus-visible { outline: 2px solid var(--color-focus, #f0a03a) !important; outline-offset: 2px !important; }
+button:active { transform: translateY(1px); }
+button:disabled { opacity: 0.55; cursor: not-allowed; }
+h1, h2, h3, h4, h5, h6 { overflow-wrap: break-word; min-width: 0; text-wrap: balance; }
+p { text-wrap: pretty; }

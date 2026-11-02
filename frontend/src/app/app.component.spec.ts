@@ -30,7 +30,7 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('#pageTitle')?.textContent).toContain(
+    expect(compiled.querySelector('.brand')?.textContent).toContain(
       'Werewolves - Dawn',
     );
   });

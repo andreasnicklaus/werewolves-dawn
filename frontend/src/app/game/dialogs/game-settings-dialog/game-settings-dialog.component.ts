@@ -27,6 +27,14 @@ export class GameSettingsDialogComponent implements OnInit {
     return this.data.selectedRoles.some((sRole) => sRole.name === role.name);
   }
 
+  get selectedRoleCount(): number {
+    return this.data.selectedRoles?.length || 0;
+  }
+
+  get requiredRoleCount(): number {
+    return (this.gameService.game?.playerList.length || 0) + 2;
+  }
+
   setRoles() {
     this.gameService.setupRoles(this.data.selectedRoles);
   }
@@ -37,9 +45,6 @@ export class GameSettingsDialogComponent implements OnInit {
   }
 
   roleNumberIsOk() {
-    return (
-      (this.data.selectedRoles?.length || 0) ===
-      (this.gameService.game?.playerList.length || 0) + 2
-    );
+    return this.selectedRoleCount === this.requiredRoleCount;
   }
 }

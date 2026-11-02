@@ -176,7 +176,6 @@ export class YourTurnDialogComponent implements OnInit, OnDestroy {
   }
 
   onActionPlayerList = (actionPlayers: { uuid: string; name: string }[]) => {
-    console.log('fortuneTellerAction', actionPlayers);
     this.turnDetailDialog.open(TurnDetailDialogComponent, {
       data: {
         myRole: this.gs.getOwnRole(),

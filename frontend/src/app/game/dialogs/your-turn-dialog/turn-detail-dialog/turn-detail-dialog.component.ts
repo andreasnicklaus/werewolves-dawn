@@ -38,11 +38,14 @@ export class TurnDetailDialogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('DATA', this.data);
     this.gs.subscribe({
       onNextPlayer: this.close,
       onRoundEnd: this.close,
     });
+  }
+
+  get turnedTeamLabel(): string {
+    return this.data.overTurnedRole?.friendly ? 'Villager' : 'Werewolf';
   }
 
   close = () => this.dialogRef.close();

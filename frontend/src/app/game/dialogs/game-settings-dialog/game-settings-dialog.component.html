@@ -1,4 +1,5 @@
-<h1 mat-dialog-title>Settings</h1>
+<h1 mat-dialog-title>Game settings</h1>
+
 <div mat-dialog-content id="settings">
   <mat-expansion-panel>
     <mat-expansion-panel-header>
@@ -14,9 +15,9 @@
         [selected]="roleIsSelected(role)"
       >
         {{ role.name }}
-        <mat-icon color="primary" [matTooltip]="role.description || ''"
-          >info</mat-icon
-        >
+        <mat-icon color="primary" [matTooltip]="role.description || ''">
+          info
+        </mat-icon>
       </mat-list-option>
     </mat-selection-list>
 
@@ -27,27 +28,31 @@
     </mat-card-actions>
   </mat-expansion-panel>
 
-  <div *ngIf="!roleNumberIsOk()" class="m2 warn">
-    The number of selected roles does not match:<br />number of players + 2
-  </div>
-  <!-- TODO: change the waittime (number & sqrt(numberOfPlayersatOnce)) -->
+  <p class="role-count" [class.role-count--ok]="roleNumberIsOk()">
+    {{ selectedRoleCount }} of {{ requiredRoleCount }} roles selected
+  </p>
 
-  <mat-dialog-actions align="end">
-    <span
-      [matTooltip]="
-        roleNumberIsOk()
-          ? ''
-          : 'The number of selected roles does not match: number of players + 2'
-      "
-    >
-      <button
-        mat-raised-button
-        color="primary"
-        (click)="startGame()"
-        [disabled]="!roleNumberIsOk()"
-      >
-        Start game
-      </button>
-    </span>
-  </mat-dialog-actions>
+  <div *ngIf="!roleNumberIsOk()" class="warn">
+    The number of selected roles does not match the number of players plus two.
+  </div>
 </div>
+
+<mat-dialog-actions align="end">
+  <button mat-stroked-button (click)="dialogRef.close()">Close</button>
+  <span
+    [matTooltip]="
+      roleNumberIsOk()
+        ? ''
+        : 'The number of selected roles does not match: number of players + 2'
+    "
+  >
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="startGame()"
+      [disabled]="!roleNumberIsOk()"
+    >
+      Start game
+    </button>
+  </span>
+</mat-dialog-actions>

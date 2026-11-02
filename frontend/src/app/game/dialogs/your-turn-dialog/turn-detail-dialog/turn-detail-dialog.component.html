@@ -1,29 +1,27 @@
 <ng-container
-  class="m2"
   *ngIf="data.overTurnedRole; then turnedRoleInfo"
 ></ng-container>
 
 <ng-template #turnedRoleInfo>
-  <h1 mat-dialog-title>You turned these cards over:</h1>
-  <div mat-dialog-content>
-    <h2>{{ data.overTurnedRole.name }}</h2>
-    <mat-chip-set>
+  <h1 mat-dialog-title>You turned over</h1>
+  <div mat-dialog-content class="turned">
+    <h2 class="turned__role">{{ data.overTurnedRole.name }}</h2>
+    <mat-chip-set class="turned__team">
       <mat-chip
         [color]="data.overTurnedRole.friendly ? 'primary' : 'warn'"
         selected
       >
-        {{ data.overTurnedRole.friendly ? "villager" : "werewolf" }}
+        {{ turnedTeamLabel }}
       </mat-chip>
     </mat-chip-set>
     <p>{{ data.overTurnedRole.description }}</p>
   </div>
 </ng-template>
 
-<div *ngIf="data.myRole?.name === 'Ghost buster'">
+<div *ngIf="data.myRole?.name === 'Ghost buster' && data.overTurnedRole">
   <mat-divider></mat-divider>
 
   <ng-container
-    class="m2"
     *ngIf="
       data.overTurnedRole.friendly;
       then anotherTurnOver;
@@ -32,7 +30,7 @@
   ></ng-container>
   <ng-template #anotherTurnOver>
     <p>
-      You turned over a {{ data.overTurnedRole.name }}. Choose another player's
+      You turned over a {{ data.overTurnedRole.name }}. Choose another player’s
       role card or skip:
     </p>
     <mat-button-toggle-group
@@ -62,7 +60,7 @@
   <ng-template #turnedOverWerewolf>
     <p>
       You turned over a {{ data.overTurnedRole.name }}. You will now be in the
-      werewolves' team yourself.
+      werewolves’ team yourself.
     </p>
     <button mat-raised-button color="primary" (click)="dialogRef.close()">
       Close
@@ -94,9 +92,9 @@
 </div>
 
 <div *ngIf="data.myRole?.name === 'Fortune teller'">
-  <p>Players, who have performed an action this round:</p>
+  <p>Players who have performed an action this round:</p>
   <mat-list>
-    <mat-list-item *ngFor="let player of data.fortuneTellerInfo?.actionPlayers">
+    <mat-list-item *ngFor="let player of data.fortuneTellerInfo.actionPlayers">
       {{ player.name }}
     </mat-list-item>
   </mat-list>

@@ -1,5 +1,5 @@
-<h1 mat-dialog-title>{{ winnerTeamString }} won!</h1>
-<div mat-dialog-content>
+<h1 mat-dialog-title class="final__title">Victory for the {{ winnerTeamString }}</h1>
+<div mat-dialog-content class="final">
   <ng-container
     *ngIf="
       data.roleAfterTheRound.friendly === data.winnerFriendly;
@@ -9,10 +9,16 @@
   ></ng-container>
 
   <ng-template #youWin>
-    <p>You won as {{ data.roleAfterTheRound.name }}!</p>
+    <p>You won as {{ data.roleAfterTheRound.name }}.</p>
   </ng-template>
 
   <ng-template #youLose>
-    <p>You lost as {{ data.roleAfterTheRound.name }}!</p>
+    <p>You lost as {{ data.roleAfterTheRound.name }}.</p>
   </ng-template>
 </div>
+
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="primary" (click)="dialogRef.close()">
+    Close
+  </button>
+</mat-dialog-actions>

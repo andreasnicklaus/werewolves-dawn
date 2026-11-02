@@ -1,0 +1,29 @@
+// Hallmark · checked: 2026-11-01 · genre: modern-minimal (inferred)
+// floor: tokens · theme: dark atmospheric (amber signal) · scope: app screen
+@use '@angular/material' as mat;
+
+$dark-theme: mat.define-theme((
+  color: (
+    theme-type: dark,
+    primary: mat.$orange-palette,
+    tertiary: mat.$yellow-palette,
+  ),
+  typography: (
+    plain-family: (Roboto, "Helvetica Neue", sans-serif),
+    brand-family: (Roboto, "Helvetica Neue", sans-serif),
+  ),
+  density: (scale: 0)
+));
+
+html {
+  @include mat.all-component-themes($dark-theme);
+  @include mat.system-level-colors($dark-theme);
+  @include mat.system-level-typography($dark-theme);
+  @include mat.system-level-elevation($dark-theme);
+  @include mat.system-level-shape($dark-theme);
+}
+
+body {
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+}

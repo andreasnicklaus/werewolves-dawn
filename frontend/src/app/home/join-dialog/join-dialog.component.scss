@@ -1,0 +1,27 @@
+:host {
+  display: block;
+}
+
+.dialog-lede {
+  max-width: 48ch;
+  margin: 0 0 var(--space-5, 20px);
+  color: color-mix(in srgb, var(--color-ink) 78%, transparent);
+}
+
+mat-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 8px);
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+/* Hallmark floor (mirrored for component scope; global source: src/styles/tokens.scss) */
+:host { overflow-x: clip; }
+*:focus-visible { outline: 2px solid var(--color-focus, #f0a03a) !important; outline-offset: 2px !important; }
+button:active { transform: translateY(1px); }
+button:disabled { opacity: 0.55; cursor: not-allowed; }
+h1, h2, h3, h4, h5, h6 { overflow-wrap: break-word; min-width: 0; text-wrap: balance; }
+p { text-wrap: pretty; }

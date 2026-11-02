@@ -1,15 +1,23 @@
-<mat-card class="fit">
-  <mat-card-header>
-    <mat-card-title> Room code: </mat-card-title>
-  </mat-card-header>
-  {{ data.roomCode }}
-  <mat-card-actions align="end">
-    <button
-      (click)="sendCopiedMessage()"
-      mat-icon-button
-      [cdkCopyToClipboard]="data.roomCode || 'no roomCode'"
-    >
-      <mat-icon>content_copy</mat-icon>
-    </button>
-  </mat-card-actions>
-</mat-card>
+<h1 mat-dialog-title>Room code</h1>
+
+<div mat-dialog-content class="room">
+  <p class="room__hint">
+    Share this code with your players. They can join from the home screen.
+  </p>
+  <p class="room__code" aria-label="Room code">
+    {{ data.roomCode || 'Not available' }}
+  </p>
+</div>
+
+<mat-dialog-actions align="end">
+  <button mat-stroked-button (click)="dialogRef.close()">Close</button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="sendCopiedMessage()"
+    [cdkCopyToClipboard]="data.roomCode || 'no roomCode'"
+  >
+    <mat-icon>content_copy</mat-icon>
+    Copy code
+  </button>
+</mat-dialog-actions>

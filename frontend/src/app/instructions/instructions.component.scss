@@ -1,0 +1,86 @@
+.instructions {
+  max-width: 72rem;
+  margin-inline: auto;
+  padding: var(--space-6, 24px) var(--space-4, 16px);
+  color: var(--color-ink, #f2ede4);
+}
+
+.instructions__section {
+  padding-block: var(--space-6, 24px);
+  border-top: 1px solid var(--color-surface-3, #232d3d);
+}
+
+.instructions__section:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+mat-accordion {
+  display: grid;
+  gap: var(--space-3, 12px);
+}
+
+mat-expansion-panel {
+  background-color: var(--color-surface-2, #1a2230);
+  color: var(--color-ink, #f2ede4);
+}
+
+h2 {
+  margin: 0 0 var(--space-4, 16px);
+  font-family: var(--font-display, var(--font-sans));
+  font-size: var(--text-2xl, 1.424rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  overflow-wrap: break-word;
+  min-width: 0;
+}
+
+h3 {
+  margin: var(--space-6, 24px) 0 var(--space-2, 8px);
+  font-family: var(--font-display, var(--font-sans));
+  font-size: var(--text-xl, 1.266rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+h3:first-of-type {
+  margin-top: 0;
+}
+
+p,
+li {
+  line-height: 1.65;
+}
+
+.team-chip--villager {
+  background-color: color-mix(in srgb, var(--color-success) 24%, var(--color-surface-2)) !important;
+  color: var(--color-ink) !important;
+}
+
+.team-chip--werewolf {
+  background-color: color-mix(in srgb, var(--color-danger) 24%, var(--color-surface-2)) !important;
+  color: var(--color-ink) !important;
+}
+
+ol,
+ul {
+  padding-left: var(--space-6, 24px);
+}
+
+a {
+  color: var(--color-accent, #f0a03a);
+}
+
+b,
+strong {
+  color: var(--color-ink);
+  font-weight: 600;
+}
+
+/* Hallmark floor (mirrored for component scope; global source: src/styles/tokens.scss) */
+:host { overflow-x: clip; }
+*:focus-visible { outline: 2px solid var(--color-focus, #f0a03a) !important; outline-offset: 2px !important; }
+button:active { transform: translateY(1px); }
+button:disabled { opacity: 0.55; cursor: not-allowed; }
+h1, h2, h3, h4, h5, h6 { overflow-wrap: break-word; min-width: 0; text-wrap: balance; }
+p { text-wrap: pretty; }

@@ -1,18 +1,22 @@
-<h1 mat-dialog-title>The round ended! Give your vote now:</h1>
+<h1 mat-dialog-title>Who do you vote for?</h1>
 
-<div mat-dialog-content class="buttonContainer">
-  <mat-card *ngFor="let player of getVoteOptions()">
-    {{ player.name }}
-    <mat-card-actions>
-      <button
-        mat-stroked-button
-        color="primary"
-        (mousedown)="vote(player.uuid)"
-      >
-        Vote
-      </button>
-    </mat-card-actions>
-  </mat-card>
+<div mat-dialog-content>
+  <p class="vote-intro">
+    The round has ended. Choose one player to vote out of the village.
+  </p>
+
+  <div class="vote-options">
+    <mat-card class="vote-card" *ngFor="let player of getVoteOptions()">
+      <mat-card-title>{{ player.name }}</mat-card-title>
+      <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="vote(player.uuid)">
+          Vote
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <p class="vote-confirm" *ngIf="voteGiven" role="status">
+    Your vote is in: {{ votedFor }}.
+  </p>
 </div>
-
-<div *ngIf="voteGiven">You voted for {{ votedFor }}</div>

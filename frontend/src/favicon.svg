@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <mask id="moon">
+      <rect width="64" height="64" fill="white"/>
+      <circle cx="36" cy="33" r="13" fill="black"/>
+      <circle cx="42" cy="33" r="10" fill="white"/>
+    </mask>
+  </defs>
+  <path d="M32 9 L51 16 V33 C51 45 41.5 53 32 57 C22.5 53 13 45 13 33 V16 Z" fill="#f0a03a" mask="url(#moon)"/>
+</svg>
