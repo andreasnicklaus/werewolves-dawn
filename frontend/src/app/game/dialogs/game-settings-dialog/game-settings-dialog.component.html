@@ -7,7 +7,7 @@
       <mat-panel-description>Choose the available roles</mat-panel-description>
     </mat-expansion-panel-header>
 
-    <mat-selection-list #roleSelectionList [(ngModel)]="data.selectedRoles">
+    <mat-selection-list id="roleSelectionList" #roleSelectionList [(ngModel)]="data.selectedRoles">
       <mat-list-option
         *ngFor="let role of data.roles"
         color="primary"

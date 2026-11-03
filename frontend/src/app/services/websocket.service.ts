@@ -2,12 +2,17 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscribable } from '../../utils/subscribable';
 import { MessageService } from './message.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WebsocketService extends Subscribable {
-  ws = new WebSocket(`wss://${window.location.hostname}/ws`);
+  ws = new WebSocket(
+    environment.production
+      ? 'wss://api.werewolves.andreasnicklaus.de/ws'
+      : 'ws://localhost:8080/ws',
+  );
 
   constructor(
     private messageService: MessageService,

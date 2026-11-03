@@ -9,6 +9,15 @@ mat-selection-list {
   border-radius: var(--radius-md, 10px);
 }
 
+#roleSelectionList {
+  padding-inline: 0;
+
+  .mdc-list-item,
+  .mat-mdc-list-option {
+    padding-inline: 0;
+  }
+}
+
 .role-count {
   margin: 0;
   font-size: var(--text-sm, 0.875rem);

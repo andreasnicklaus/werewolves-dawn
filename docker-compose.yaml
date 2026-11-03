@@ -1,26 +1,8 @@
-version: '3'
 services:
 
   backend:
     build:
       context: ./backend
     ports:
-      - 8083:8081
-    networks:
-      - nginx_proxy
-    # restart: unless-stopped
-
-  frontend:
-    build:
-      context: ./frontend
-    ports:
-      - 93:80
-    depends_on:
-      - backend
-    networks:
-      - nginx_proxy
+      - 8080:8080
     restart: unless-stopped
-
-networks:
-  nginx_proxy:
-    external: true
