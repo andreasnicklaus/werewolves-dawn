@@ -1,3 +1,32 @@
-.fit {
-  width: fit-content;
+:host {
+  display: block;
 }
+
+.room__hint {
+  max-width: 46ch;
+  margin: 0 0 var(--space-6, 24px);
+  color: color-mix(in srgb, var(--color-ink) 78%, transparent);
+}
+
+.room__code {
+  margin: 0;
+  padding: var(--space-4, 16px) var(--space-6, 24px);
+  border-radius: var(--radius-md, 10px);
+  background-color: var(--color-surface-2, #1a2230);
+  border: 1px solid var(--color-surface-3, #232d3d);
+  color: var(--color-accent, #f0a03a);
+  font-family: var(--font-mono);
+  font-size: var(--text-2xl, 1.424rem);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+/* Hallmark floor (mirrored for component scope; global source: src/styles/tokens.scss) */
+:host { overflow-x: clip; }
+*:focus-visible { outline: 2px solid var(--color-focus, #f0a03a) !important; outline-offset: 2px !important; }
+button:active { transform: translateY(1px); }
+button:disabled { opacity: 0.55; cursor: not-allowed; }
+h1, h2, h3, h4, h5, h6 { overflow-wrap: break-word; min-width: 0; text-wrap: balance; }
+p { text-wrap: pretty; }

@@ -1,17 +1,185 @@
-<div class="gridCenter" id="home">
-  <mat-list>
-    <mat-list-item>
-      <button mat-raised-button color="primary" (click)="openHost()">
-        Start a game
-      </button>
-    </mat-list-item>
-    <mat-list-item>
-      <button mat-stroked-button color="primary" (click)="openJoin()">
-        Join a game
-      </button>
-    </mat-list-item>
-    <mat-list-item>
-      <a routerLink="/instructions" mat-button color="primary">Instructions</a>
-    </mat-list-item>
-  </mat-list>
+<div class="flyer">
+  <!-- Hero -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero__copy">
+      <h1 id="hero-title" class="hero__title">
+        Werewolves
+        <span class="hero__dawn">
+          Dawn
+          <span class="hero__moon" aria-hidden="true"></span>
+        </span>
+      </h1>
+      <p class="hero__lede">
+        A village, a night, and a few wolves among you. Gather your table and
+        survive until morning.
+      </p>
+      <div class="hero__actions">
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="openHost()"
+        >
+          Host a game
+        </button>
+        <button
+          mat-stroked-button
+          color="primary"
+          (click)="openJoin()"
+        >
+          Join a game
+        </button>
+      </div>
+      <nav class="hero__links" aria-label="Secondary">
+        <a routerLink="/instructions" mat-button>How to play</a>
+      </nav>
+    </div>
+
+    <div class="hero__tableau" aria-hidden="true">
+      <div class="hero__card hero__card--left"></div>
+      <div class="hero__card hero__card--right"></div>
+      <div class="hero__card hero__card--front">
+        <mat-icon>shield_moon</mat-icon>
+      </div>
+    </div>
+  </section>
+
+  <!-- Setting -->
+  <section class="section section--setting" aria-labelledby="setting-title">
+    <div class="section__inner">
+      <h2 id="setting-title">Better keep one eye open tonight.</h2>
+      <p>
+        For weeks, dead animals have been turning up in the woods around your
+        village. Someone, or something, hunts every night. This morning the
+        eldest swears she saw them: werewolves. Tonight everyone stays awake.
+        Tomorrow you vote, and the lives of the whole village depend on it.
+      </p>
+      <p>
+        The village’s youngest asks the question no one wants to answer: if I am
+        awake tonight, won’t you all think I might be a werewolf? Will you sleep,
+        or risk your own life to find the evil?
+      </p>
+    </div>
+  </section>
+
+  <!-- How a round flows -->
+  <section class="section" aria-labelledby="flow-title">
+    <div class="section__inner">
+      <h2 id="flow-title">How a round flows</h2>
+      <div class="flow">
+        <article class="flow__step">
+          <span class="flow__num">01</span>
+          <h3>Night</h3>
+          <p>
+            Everyone closes their eyes. Each role wakes in turn and plays its
+            action in secret.
+          </p>
+        </article>
+        <article class="flow__step">
+          <span class="flow__num">02</span>
+          <h3>Day</h3>
+          <p>
+            The village wakes, debates, and votes to remove one player. Five
+            minutes to decide.
+          </p>
+        </article>
+        <article class="flow__step">
+          <span class="flow__num">03</span>
+          <h3>Reckoning</h3>
+          <p>
+            A werewolf voted out means the villagers win. A villager means the
+            werewolves win.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Roles -->
+  <section class="section" aria-labelledby="roles-title">
+    <div class="section__inner">
+      <h2 id="roles-title">Roles worth fearing</h2>
+      <p class="section__lede">
+        More cards than players, so every round hides which roles were dealt.
+      </p>
+      <div class="role-grid">
+        <mat-card
+          class="role-card"
+          [class.role-card--evil]="!role.friendly"
+          [class.role-card--good]="role.friendly"
+          *ngFor="let role of featuredRoles"
+        >
+          <mat-card-header>
+            <mat-card-title>{{ role.name }}</mat-card-title>
+            <mat-card-subtitle>
+              <mat-chip
+                [color]="role.friendly ? 'primary' : 'warn'"
+                selected
+              >
+                {{ teamLabel(role) }}
+              </mat-chip>
+            </mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p>{{ role.description }}</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </section>
+
+  <!-- Scenarios -->
+  <section class="section" aria-labelledby="scenarios-title">
+    <div class="section__inner">
+      <h2 id="scenarios-title">Pick your table size</h2>
+      <div class="scenario-grid">
+        <mat-card
+          class="scenario-card"
+          *ngFor="let scenario of scenarios"
+        >
+          <mat-card-header>
+            <mat-card-title>{{ scenario.name }}</mat-card-title>
+            <mat-card-subtitle>{{ scenario.players }} players</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p>{{ scenario.roles }}</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta" aria-labelledby="cta-title">
+    <div class="cta__inner">
+      <h2 id="cta-title">Ready to play?</h2>
+      <p class="cta__lede">
+        Name your host, create a room, and invite your table.
+      </p>
+      <div class="cta__actions">
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="openHost()"
+        >
+          Host a game
+        </button>
+        <button
+          mat-stroked-button
+          color="primary"
+          (click)="openJoin()"
+        >
+          Join a game
+        </button>
+      </div>
+      <a routerLink="/instructions" mat-button>Read the full rules</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="flyer__footer">
+    <p>
+      Werewolves – Dawn. A social deduction game for a dark room. Play with 3 to
+      10 players.
+    </p>
+  </footer>
 </div>

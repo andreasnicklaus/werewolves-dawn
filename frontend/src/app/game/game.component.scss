@@ -1,19 +1,151 @@
-button.spaced {
-  margin: 0 8px 0 0;
-}
-
-#playerCards {
+.game-shell {
   display: grid;
-  grid-gap: 16px;
-  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6, 24px);
+  max-width: 72rem;
+  margin-inline: auto;
+  padding: var(--space-6, 24px) var(--space-4, 16px);
+  color: var(--color-ink, #f2ede4);
 }
 
-.flex {
-  display: flex;
+.game-state {
+  place-items: center;
+  align-content: center;
+  min-height: calc(100vh - 64px);
+  gap: var(--space-4, 16px);
+  text-align: center;
 }
 
-#middleCards {
+.game-state p {
+  margin: 0;
+  color: color-mix(in srgb, var(--color-ink) 78%, transparent);
+}
+
+.game-menu {
   display: flex;
-  justify-content: space-evenly;
+  flex-wrap: wrap;
   align-items: center;
+  gap: var(--space-2, 8px);
 }
+
+.game-menu__start {
+  margin-left: auto;
+}
+
+.game-section {
+  display: grid;
+  gap: var(--space-4, 16px);
+}
+
+.game-section__title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3, 12px);
+  margin: 0;
+  font-family: var(--font-display, var(--font-sans));
+  font-size: var(--text-2xl, 1.424rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.game-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.75rem;
+  height: 1.75rem;
+  padding-inline: var(--space-2, 8px);
+  border-radius: 999px;
+  background-color: var(--color-surface-2, #1a2230);
+  border: 1px solid var(--color-surface-3, #232d3d);
+  color: var(--color-accent, #f0a03a);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm, 0.875rem);
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+  gap: var(--space-4, 16px);
+}
+
+.player-card {
+  position: relative;
+  background-color: var(--color-surface-1, #121821);
+  color: var(--color-ink, #f2ede4);
+  border: 1px solid var(--color-surface-3, #232d3d);
+  border-radius: var(--radius-md, 10px);
+}
+
+.player-card mat-card-title {
+  font-family: var(--font-display, var(--font-sans));
+  font-size: var(--text-lg, 1.125rem);
+  letter-spacing: -0.01em;
+}
+
+.player-card mat-card-subtitle {
+  color: var(--color-accent, #f0a03a);
+}
+
+.player-card__role {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2, 8px);
+}
+
+.player-card__shield {
+  position: absolute;
+  top: var(--space-3, 12px);
+  right: var(--space-3, 12px);
+}
+
+.role-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-1, 4px) var(--space-3, 12px);
+  border-radius: 999px;
+  background-color: var(--color-surface-2, #1a2230);
+  border: 1px solid var(--color-surface-3, #232d3d);
+  font-size: var(--text-sm, 0.875rem);
+  line-height: 1.4;
+}
+
+.role-tag--mine {
+  background-color: color-mix(in srgb, var(--color-accent) 16%, var(--color-surface-2));
+  border-color: color-mix(in srgb, var(--color-accent) 42%, var(--color-surface-3));
+  color: var(--color-accent, #f0a03a);
+  font-weight: 600;
+}
+
+.middle-card {
+  background-color: var(--color-surface-2, #1a2230);
+  color: var(--color-ink, #f2ede4);
+  border: 1px solid var(--color-surface-3, #232d3d);
+  border-radius: var(--radius-md, 10px);
+}
+
+.middle-card mat-card-title {
+  font-family: var(--font-display, var(--font-sans));
+  font-size: var(--text-lg, 1.125rem);
+  letter-spacing: -0.01em;
+}
+
+.middle-card mat-card-subtitle {
+  color: color-mix(in srgb, var(--color-ink) 62%, transparent);
+}
+
+@media (max-width: 40rem) {
+  .game-menu__start {
+    margin-left: 0;
+  }
+}
+
+/* Hallmark floor (mirrored for component scope; global source: src/styles/tokens.scss) */
+:host { overflow-x: clip; }
+*:focus-visible { outline: 2px solid var(--color-focus, #f0a03a) !important; outline-offset: 2px !important; }
+button:active { transform: translateY(1px); }
+button:disabled { opacity: 0.55; cursor: not-allowed; }
+h1, h2, h3, h4, h5, h6 { overflow-wrap: break-word; min-width: 0; text-wrap: balance; }
+p { text-wrap: pretty; }

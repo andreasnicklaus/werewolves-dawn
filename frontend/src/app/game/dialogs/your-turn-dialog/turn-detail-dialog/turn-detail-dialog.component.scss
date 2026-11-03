@@ -1,0 +1,40 @@
+:host {
+  display: block;
+}
+
+.turned__role {
+  margin: 0 0 var(--space-2, 8px);
+  font-family: var(--font-display, var(--font-sans));
+  font-size: var(--text-2xl, 1.424rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  overflow-wrap: break-word;
+  min-width: 0;
+}
+
+.turned__team {
+  margin-bottom: var(--space-3, 12px);
+}
+
+.turned p {
+  max-width: 62ch;
+  margin: 0;
+}
+
+mat-button-toggle-group {
+  display: flex;
+  flex-wrap: wrap;
+  height: auto;
+}
+
+mat-button-toggle {
+  flex: 1 1 auto;
+}
+
+/* Hallmark floor (mirrored for component scope; global source: src/styles/tokens.scss) */
+:host { overflow-x: clip; }
+*:focus-visible { outline: 2px solid var(--color-focus, #f0a03a) !important; outline-offset: 2px !important; }
+button:active { transform: translateY(1px); }
+button:disabled { opacity: 0.55; cursor: not-allowed; }
+h1, h2, h3, h4, h5, h6 { overflow-wrap: break-word; min-width: 0; text-wrap: balance; }
+p { text-wrap: pretty; }

@@ -1,11 +1,9 @@
-<h1 mat-dialog-title>Host a new game</h1>
+<h1 mat-dialog-title>Name your host</h1>
 <mat-dialog-content>
-  <p>
-    In order to host a new game, you have to give yourself an identifiable name.
-  </p>
+  <p class="dialog-lede">Choose the name your table will see.</p>
   <mat-form-field class="fullWidth">
     <mat-label>Your name</mat-label>
-    <input matInput [(ngModel)]="data.name" />
+    <input matInput [(ngModel)]="data.name" name="name" autocomplete="name" />
   </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
@@ -16,8 +14,8 @@
     mat-raised-button
     (click)="start()"
     color="primary"
-    [disabled]="!data.name"
+    [disabled]="!data.name.trim()"
   >
-    Go
+    Create room
   </button>
 </mat-dialog-actions>

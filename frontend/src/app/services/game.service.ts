@@ -21,7 +21,7 @@ export class GameService extends Subscribable {
   }
 
   private handleMessage = (msg: any) => {
-    console.log('GameService/handleMessage received:', msg);
+
     const {
       type,
       winnerFriendly,
@@ -59,7 +59,7 @@ export class GameService extends Subscribable {
       });
       this.ms.addMessage(`You uncovered card: ${uncoveredRole.name}`);
     } else if (type === 'actionPlayers') {
-      console.log('GameService playersWithActions', playersWithActions);
+
       this.publish((cb: any) => {
         if (cb.onActionPlayerList) cb.onActionPlayerList(playersWithActions);
       });
