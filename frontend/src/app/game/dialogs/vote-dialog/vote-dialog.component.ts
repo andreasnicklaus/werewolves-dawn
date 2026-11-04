@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { WerewolfGame } from './../../../interfaces/werewolf-game';
 import { GameService } from './../../../services/game.service';
 import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogState } from '@angular/material/dialog';
 
 import { SHARED_IMPORTS } from '../../../shared-imports';
 
@@ -18,6 +18,7 @@ import { SHARED_IMPORTS } from '../../../shared-imports';
 export class VoteDialogComponent implements OnInit, OnDestroy {
   voteGiven = false;
   votedFor = '';
+  private unsub?: () => void;
 
   constructor(
     public dialogRef: MatDialogRef<VoteDialogComponent>,
@@ -27,15 +28,17 @@ export class VoteDialogComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.gs.subscribe({
+    this.unsub = this.gs.subscribe({
       onWinnerDetermined: this.openFinalDialog,
+      onGameStart: () => {
+        if (this.dialogRef.getState() === MatDialogState.OPEN)
+          this.dialogRef.close();
+      },
     });
   }
 
   ngOnDestroy(): void {
-    this.gs.unsubscribe({
-      onWinnerDetermined: this.openFinalDialog,
-    });
+    this.unsub?.();
   }
 
   getVoteOptions() {

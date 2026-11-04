@@ -1,6 +1,6 @@
 import { VoteDialogComponent } from './dialogs/vote-dialog/vote-dialog.component';
 import { Role } from './../interfaces/role';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { WerewolfGame } from '../interfaces/werewolf-game';
 import { GameService } from '../services/game.service';
@@ -19,10 +19,14 @@ import { SHARED_IMPORTS } from '../shared-imports';
   styleUrls: ['./game.component.scss'],
 })
 export class GameComponent implements OnInit, OnDestroy {
-  game?: WerewolfGame;
+  get game(): WerewolfGame | undefined {
+    return this.gameService.game;
+  }
+  private unsubGame?: () => void;
 
   constructor(
     public gameService: GameService,
+    private cdr: ChangeDetectorRef,
     private roomInfoDialog: MatDialog,
     private gameSettingsDialog: MatDialog,
     private yourTurnDialog: MatDialog,
@@ -30,27 +34,29 @@ export class GameComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.gameService.subscribe({
+    this.unsubGame = this.gameService.subscribe({
       onGameChange: this.updateGame,
       onYourTurn: this.yourTurn,
       onRoundEnd: this.openVoteDialog,
+      onGameStart: this.onGameStart,
     });
-    this.game = this.gameService.game;
   }
   ngOnDestroy(): void {
+    this.unsubGame?.();
     this.gameService.leave();
-    this.gameService.unsubscribe({
-      onGameChange: this.updateGame,
-      onYourTurn: this.yourTurn,
-    });
     this.roomInfoDialog.closeAll();
     this.gameSettingsDialog.closeAll();
     this.yourTurnDialog.closeAll();
+    this.voteDialog.closeAll();
   }
 
-  yourTurn = (): void => {
+  yourTurn = (roundId?: number): void => {
     this.yourTurnDialog.open(YourTurnDialogComponent, {
-      data: { role: this.gameService.getOwnRole(), game: this.game },
+      data: {
+        role: this.gameService.getOwnRole(),
+        game: this.game,
+        roundId: roundId ?? this.gameService.currentRoundId,
+      },
     });
   };
 
@@ -58,8 +64,14 @@ export class GameComponent implements OnInit, OnDestroy {
     return Math.sqrt(length);
   }
 
-  updateGame = (newGame: WerewolfGame) => {
-    this.game = newGame;
+  updateGame = (_newGame: WerewolfGame) => {
+    this.cdr.detectChanges();
+  };
+
+  onGameStart = (): void => {
+    this.yourTurnDialog.closeAll();
+    this.voteDialog.closeAll();
+    this.cdr.detectChanges();
   };
 
   openSettings() {

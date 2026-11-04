@@ -25,37 +25,50 @@ export class YourTurnDialogComponent implements OnInit, OnDestroy {
   selectedPlayerUUID: string = '';
   selectedIndex: number | undefined;
   ghostBusterCardsOpened = 0;
+  private unsub?: () => void;
 
   constructor(
     public dialogRef: MatDialogRef<YourTurnDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { role: Role; game: WerewolfGame },
+    @Inject(MAT_DIALOG_DATA)
+    public data: { role: Role; game: WerewolfGame; roundId?: number },
     public gs: GameService,
     private ms: MessageService,
     private turnDetailDialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
-    this.gs.subscribe({
+    this.unsub = this.gs.subscribe({
       onNextPlayer: this.forceClose,
       onRoundEnd: this.forceClose,
       onUncoveredCard: this.uncoverCard,
       onActionPlayerList: this.onActionPlayerList,
+      onGameStart: this.closeSilently,
+      onGameChange: this.onGameChange,
     });
   }
 
   ngOnDestroy(): void {
-    this.gs.unsubscribe({
-      onNextPlayer: this.forceClose,
-      onRoundEnd: this.forceClose,
-      onUncoveredCard: this.uncoverCard,
-      onActionPlayerList: this.onActionPlayerList,
-    });
+    this.unsub?.();
   }
 
   forceClose = () => {
     if (this.dialogRef.getState() === MatDialogState.OPEN)
       this.ms.addMessage("Your time ran out, you didn't complete your move");
     this.dialogRef.close();
+  };
+
+  closeSilently = () => {
+    if (this.dialogRef.getState() === MatDialogState.OPEN) this.dialogRef.close();
+  };
+
+  onGameChange = (game: WerewolfGame | undefined) => {
+    if (
+      game?.roundId !== undefined &&
+      this.data.roundId !== undefined &&
+      game.roundId !== this.data.roundId
+    ) {
+      this.closeSilently();
+    }
   };
 
   close() {

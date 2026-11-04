@@ -11,6 +11,7 @@ import { Role } from '../interfaces/role';
 export class GameService extends Subscribable {
   game: WerewolfGame | undefined;
   myName: string | undefined;
+  currentRoundId: number | undefined;
 
   constructor(
     private ws: WebsocketService,
@@ -20,15 +21,27 @@ export class GameService extends Subscribable {
     ws.subscribe({ onmessage: this.handleMessage });
   }
 
-  private handleMessage = (msg: any) => {
+  private isStale(roundId?: number): boolean {
+    return (
+      roundId !== undefined &&
+      this.currentRoundId !== undefined &&
+      roundId < this.currentRoundId
+    );
+  }
 
+  private handleMessage = (msg: any) => {
     const {
       type,
       winnerFriendly,
       roleAfterTheRound,
       uncoveredRole,
       playersWithActions,
+      roundId,
     } = msg;
+
+    // Ignore stale events coming from a previous round.
+    if (this.isStale(roundId)) return;
+
     if (type === 'winnerDetermined') {
       this.ms.addMessage(
         `Winner: ${winnerFriendly ? 'Villagers' : 'Werewolves'}`,
@@ -38,15 +51,20 @@ export class GameService extends Subscribable {
           cb.onWinnerDetermined(winnerFriendly, roleAfterTheRound);
       });
     } else if (type === 'gameStart') {
+      if (roundId !== undefined) this.currentRoundId = roundId;
       this.ms.addMessage('The game starts now!');
+      this.publish((cb: any) => {
+        if (cb.onGameStart) cb.onGameStart();
+      });
     } else if (type === 'NextPlayer') {
       this.publish((cb: any) => {
         if (cb.onNextPlayer) cb.onNextPlayer();
       });
     } else if (type === 'YourTurn') {
+      if (roundId !== undefined) this.currentRoundId = roundId;
       this.ms.addMessage(`Your turn, ${this.myName}!`);
       this.publish((cb: any) => {
-        if (cb.onYourTurn) cb.onYourTurn();
+        if (cb.onYourTurn) cb.onYourTurn(roundId ?? this.currentRoundId);
       });
     } else if (type === 'RoundEnd') {
       this.publish((cb: any) => {
@@ -59,11 +77,18 @@ export class GameService extends Subscribable {
       });
       this.ms.addMessage(`You uncovered card: ${uncoveredRole.name}`);
     } else if (type === 'actionPlayers') {
-
       this.publish((cb: any) => {
         if (cb.onActionPlayerList) cb.onActionPlayerList(playersWithActions);
       });
+    } else if (type === 'GameState') {
+      if (roundId !== undefined) this.currentRoundId = roundId;
+      this.game = msg;
+      this.publish((cb: any) => {
+        if (cb.onGameChange) cb.onGameChange(this.game);
+      });
     } else {
+      // Backward-compatible fallback for untyped snapshots.
+      if (roundId !== undefined) this.currentRoundId = roundId;
       this.game = msg;
       this.publish((cb: any) => {
         if (cb.onGameChange) cb.onGameChange(this.game);

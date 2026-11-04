@@ -26,16 +26,18 @@ function leaveRoom(roomCode, uuid) {
 }
 
 function broadCastMessage(roomCode, data) {
-  Object.entries(rooms[roomCode]).forEach(([key, { socket }]) => {
+  Object.entries(rooms[roomCode]).forEach(([key, value]) => {
     if (key === "game" || key === "timeout") return;
-    socket.send(JSON.stringify({ roomCode, ...data }));
+    if (!value || !value.socket) return;
+    value.socket.send(JSON.stringify({ roomCode, ...data }));
   });
 }
 
 function broadCastPlayerInfo(roomCode) {
-  Object.entries(rooms[roomCode]).forEach(([key, { socket }]) => {
+  Object.entries(rooms[roomCode]).forEach(([key, value]) => {
     if (key === "game" || key === "timeout") return;
-    socket.send(
+    if (!value || !value.socket) return;
+    value.socket.send(
       JSON.stringify({ roomCode, ...rooms[roomCode].game.getPrivateInfo(key) }),
     );
   });
@@ -43,12 +45,15 @@ function broadCastPlayerInfo(roomCode) {
 
 function broadCastRoundFinishMessage(roomCode) {
   const winnerFriendly = rooms[roomCode].game.getWinner();
+  const roundId = rooms[roomCode].game.roundId;
 
-  Object.entries(rooms[roomCode]).forEach(([key, { socket }]) => {
+  Object.entries(rooms[roomCode]).forEach(([key, value]) => {
     if (key === "game" || key === "timeout") return;
-    socket.send(
+    if (!value || !value.socket) return;
+    value.socket.send(
       JSON.stringify({
         type: "winnerDetermined",
+        roundId,
         winnerFriendly,
         roleAfterTheRound: rooms[roomCode].game.getRoleAfterTheRound(key),
       }),
@@ -58,14 +63,17 @@ function broadCastRoundFinishMessage(roomCode) {
 
 function sendNextPlayerMessages(roomCode) {
   let nextUUIDs = rooms[roomCode].game.nextPlayers();
+  const roundId = rooms[roomCode].game.roundId;
   if (nextUUIDs) {
     broadCastMessage(roomCode, {
       type: "NextPlayer",
+      roundId,
     });
     for (const nextUUID of nextUUIDs) {
       rooms[roomCode][nextUUID].socket.send(
         JSON.stringify({
           type: "YourTurn",
+          roundId,
         }),
       );
     }
@@ -75,8 +83,10 @@ function sendNextPlayerMessages(roomCode) {
   } else {
     broadCastMessage(roomCode, {
       type: "RoundEnd",
+      roundId,
     });
     rooms[roomCode].game.currentPlayerIndex = null;
+    delete rooms[roomCode].timeout;
   }
 }
 
@@ -107,8 +117,13 @@ module.exports.handleMessage = function (socket, uuid, data) {
   } else if (meta === "leave") {
     leaveRoom(roomCode, uuid);
   } else if (meta === "startGame") {
+    // Cancel any timer left over from a previous round before starting a new one.
+    if (rooms[roomCode].timeout) {
+      clearTimeout(rooms[roomCode].timeout);
+      delete rooms[roomCode].timeout;
+    }
     rooms[roomCode].game.startGame();
-    broadCastMessage(roomCode, { type: "gameStart" });
+    broadCastMessage(roomCode, { type: "gameStart", roundId: rooms[roomCode].game.roundId });
     rooms[roomCode].timeout = setTimeout(() => {
       sendNextPlayerMessages(roomCode);
     }, rooms[roomCode].game.waitTime);
@@ -129,6 +144,7 @@ module.exports.handleMessage = function (socket, uuid, data) {
     rooms[roomCode][uuid].socket.send(
       JSON.stringify({
         type: "UncoveredCard",
+        roundId: rooms[roomCode].game.roundId,
         uncoveredRole,
       }),
     );
@@ -142,6 +158,7 @@ module.exports.handleMessage = function (socket, uuid, data) {
     rooms[roomCode][uuid].socket.send(
       JSON.stringify({
         type: "UncoveredCard",
+        roundId: rooms[roomCode].game.roundId,
         uncoveredRole,
       }),
     );
@@ -153,6 +170,7 @@ module.exports.handleMessage = function (socket, uuid, data) {
     rooms[roomCode][uuid].socket.send(
       JSON.stringify({
         type: "UncoveredCard",
+        roundId: rooms[roomCode].game.roundId,
         uncoveredRole,
       }),
     );
@@ -166,6 +184,7 @@ module.exports.handleMessage = function (socket, uuid, data) {
     rooms[roomCode][uuid].socket.send(
       JSON.stringify({
         type: "actionPlayers",
+        roundId: rooms[roomCode].game.roundId,
         playersWithActions,
       }),
     );
