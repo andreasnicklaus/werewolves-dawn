@@ -9,15 +9,6 @@ mat-selection-list {
   border-radius: var(--radius-md, 10px);
 }
 
-#roleSelectionList {
-  padding-inline: 0;
-
-  .mdc-list-item,
-  .mat-mdc-list-option {
-    padding-inline: 0;
-  }
-}
-
 .role-count {
   margin: 0;
   font-size: var(--text-sm, 0.875rem);
@@ -31,20 +22,44 @@ mat-selection-list {
 .warn {
   padding: var(--space-3, 12px) var(--space-4, 16px);
   border-radius: var(--radius-sm, 6px);
-  background-color: color-mix(
-    in srgb,
-    var(--color-danger) 16%,
-    var(--color-surface-1)
-  );
+  background-color: color-mix(in srgb,
+      var(--color-danger) 16%,
+      var(--color-surface-1));
   border: 1px solid color-mix(in srgb, var(--color-danger) 48%, transparent);
   color: var(--color-ink, #f2ede4);
   font-weight: 600;
 }
 
 /* Hallmark floor (mirrored for component scope; global source: src/styles/tokens.scss) */
-:host { overflow-x: clip; }
-*:focus-visible { outline: 2px solid var(--color-focus, #f0a03a) !important; outline-offset: 2px !important; }
-button:active { transform: translateY(1px); }
-button:disabled { opacity: 0.55; cursor: not-allowed; }
-h1, h2, h3, h4, h5, h6 { overflow-wrap: break-word; min-width: 0; text-wrap: balance; }
-p { text-wrap: pretty; }
+:host {
+  overflow-x: clip;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--color-focus, #f0a03a) !important;
+  outline-offset: 2px !important;
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+  min-width: 0;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}

@@ -1,15 +1,16 @@
 <h1 mat-dialog-title>Your turn,<br>{{ data.role.name | titlecase }}</h1>
-<ng-container
-  mat-dialog-content
-  *ngIf="data.role.order == '-'; then noActivity; else activity"
-></ng-container>
 
-<ng-template #noActivity>
-  <p>Your role has no activity during the night.</p>
-  <button mat-raised-button color="primary" (click)="close()">Done</button>
-</ng-template>
+<mat-dialog-content>
+  <ng-container
+    *ngIf="data.role.order == '-'; then noActivity; else activity"
+  ></ng-container>
 
-<ng-template #activity>
+  <ng-template #noActivity>
+    <p>Your role has no activity during the night.</p>
+    <button mat-raised-button color="primary" (click)="close()">Done</button>
+  </ng-template>
+
+  <ng-template #activity>
   <p class="role-brief">{{ data.role.description }}</p>
 
   <!--  Warden  -->
@@ -357,4 +358,5 @@
     <p>Why didn’t you listen? I told you not to use this role? smh</p>
     <button mat-raised-button color="primary" (click)="close()">Close</button>
   </div>
-</ng-template>
+  </ng-template>
+</mat-dialog-content>

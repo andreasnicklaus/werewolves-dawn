@@ -1,32 +1,37 @@
 <h1 mat-dialog-title>Game settings</h1>
 
 <div mat-dialog-content id="settings">
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>Roles</mat-panel-title>
-      <mat-panel-description>Choose the available roles</mat-panel-description>
-    </mat-expansion-panel-header>
+  <div *ngIf="!roleNumberIsOk()" class="warn">
+    The number of selected roles does not match the number of players plus two.
+  </div>
 
-    <mat-selection-list id="roleSelectionList" #roleSelectionList [(ngModel)]="data.selectedRoles">
-      <mat-list-option
-        *ngFor="let role of data.roles"
-        color="primary"
-        [value]="role"
-        [selected]="roleIsSelected(role)"
-      >
-        {{ role.name }}
-        <mat-icon color="primary" [matTooltip]="role.description || ''">
-          info
-        </mat-icon>
-      </mat-list-option>
-    </mat-selection-list>
+  <p class="role-count" [class.role-count--ok]="roleNumberIsOk()">
+    {{ selectedRoleCount }} of {{ requiredRoleCount }} roles selected
+  </p>
 
-    <mat-card-actions align="end">
-      <button mat-stroked-button color="primary" (click)="setRoles()">
-        Save roles
-      </button>
-    </mat-card-actions>
-  </mat-expansion-panel>
+  <mat-selection-list
+    id="roleSelectionList"
+    #roleSelectionList
+    [(ngModel)]="data.selectedRoles"
+  >
+    <mat-list-option
+      *ngFor="let role of data.roles"
+      color="primary"
+      [value]="role"
+      [selected]="roleIsSelected(role)"
+    >
+      {{ role.name }}
+      <mat-icon color="primary" [matTooltip]="role.description || ''">
+        info
+      </mat-icon>
+    </mat-list-option>
+  </mat-selection-list>
+
+  <mat-card-actions align="end">
+    <button mat-stroked-button color="primary" (click)="setRoles()">
+      Save roles
+    </button>
+  </mat-card-actions>
 
   <p class="role-count" [class.role-count--ok]="roleNumberIsOk()">
     {{ selectedRoleCount }} of {{ requiredRoleCount }} roles selected
