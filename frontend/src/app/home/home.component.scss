@@ -12,16 +12,14 @@
   position: absolute;
   inset: 0 0 auto;
   height: 100vh;
-  background: radial-gradient(
-    ellipse 80% 60% at 20% 20%,
-    color-mix(in srgb, var(--color-accent) 20%, transparent),
-    transparent 65%
-  );
+  background: radial-gradient(ellipse 80% 60% at 20% 20%,
+      color-mix(in srgb, var(--color-accent) 20%, transparent),
+      transparent 65%);
   pointer-events: none;
   z-index: 0;
 }
 
-.flyer > * {
+.flyer>* {
   position: relative;
   z-index: 1;
 }
@@ -45,7 +43,7 @@
   content: none;
 }
 
-.hero > * {
+.hero>* {
   position: relative;
   z-index: 1;
 }
@@ -67,41 +65,13 @@
   min-width: 0;
 }
 
-.hero__dawn {
-  display: flex;
-  align-items: center;
-  gap: 0.18em;
-  padding-left: 0.06em;
-}
-
-.hero__moon {
-  display: inline-block;
-  inline-size: 0.42em;
-  block-size: 0.42em;
-  flex: 0 0 auto;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle at 34% 32%,
-    var(--color-moon-highlight),
-    var(--color-accent) 58%,
-    var(--color-moon-edge)
-  );
-  box-shadow: var(--shadow-glow);
-  animation: moon-pulse 5s var(--ease-out, cubic-bezier(0.2, 0.8, 0.2, 1)) infinite alternate;
-}
-
 @keyframes moon-pulse {
   from {
     transform: scale(1);
   }
+
   to {
     transform: scale(1.08);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero__moon {
-    animation: none;
   }
 }
 
@@ -158,11 +128,9 @@
   transform: rotate(-2deg);
   display: grid;
   place-items: center;
-  background: linear-gradient(
-    160deg,
-    var(--color-surface-2, #1a2230),
-    var(--color-surface-1, #121821)
-  );
+  background: linear-gradient(160deg,
+      var(--color-surface-2, #1a2230),
+      var(--color-surface-1, #121821));
   border-color: color-mix(in srgb, var(--color-accent) 40%, var(--color-surface-3));
   box-shadow: var(--shadow-lift), var(--shadow-glow);
 }
@@ -261,6 +229,16 @@
   margin-top: var(--space-6, 24px);
 }
 
+.role-grid__caption {
+  margin: var(--space-4, 16px) 0 0;
+  text-align: center;
+  color: color-mix(in srgb, var(--color-ink) 60%, transparent);
+  font-size: var(--text-sm, 0.875rem);
+  font-style: italic;
+}
+
+
+
 .role-card {
   background-color: var(--color-surface-1, #121821);
   color: var(--color-ink, #f2ede4);
@@ -276,20 +254,16 @@
 
 .role-card--evil {
   border-color: color-mix(in srgb, var(--color-danger) 55%, var(--color-surface-3));
-  background: linear-gradient(
-    160deg,
-    color-mix(in srgb, var(--color-danger) 10%, var(--color-surface-1)),
-    var(--color-surface-1)
-  );
+  background: linear-gradient(160deg,
+      color-mix(in srgb, var(--color-danger) 10%, var(--color-surface-1)),
+      var(--color-surface-1));
 }
 
 .role-card--good {
   border-color: color-mix(in srgb, var(--color-success) 55%, var(--color-surface-3));
-  background: linear-gradient(
-    160deg,
-    color-mix(in srgb, var(--color-success) 10%, var(--color-surface-1)),
-    var(--color-surface-1)
-  );
+  background: linear-gradient(160deg,
+      color-mix(in srgb, var(--color-success) 10%, var(--color-surface-1)),
+      var(--color-surface-1));
 }
 
 .role-card mat-card-subtitle {
@@ -346,11 +320,9 @@
   padding-block: clamp(4rem, 8vw, 6rem);
   text-align: center;
   border-top: 1px solid var(--color-surface-3, #232d3d);
-  background: radial-gradient(
-    circle at 50% 0%,
-    color-mix(in srgb, var(--color-accent) 14%, transparent),
-    transparent 60%
-  );
+  background: radial-gradient(circle at 50% 0%,
+      color-mix(in srgb, var(--color-accent) 14%, transparent),
+      transparent 60%);
 }
 
 .cta__inner {
@@ -413,6 +385,7 @@
 }
 
 @media (max-width: 26rem) {
+
   .hero__actions,
   .cta__actions {
     flex-direction: column;

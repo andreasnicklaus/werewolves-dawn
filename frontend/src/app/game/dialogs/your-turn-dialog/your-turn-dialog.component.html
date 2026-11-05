@@ -1,15 +1,16 @@
 <h1 mat-dialog-title>Your turn,<br>{{ data.role.name | titlecase }}</h1>
-<ng-container
-  mat-dialog-content
-  *ngIf="data.role.order == '-'; then noActivity; else activity"
-></ng-container>
 
-<ng-template #noActivity>
-  <p>Your role has no activity during the night.</p>
-  <button mat-raised-button color="primary" (click)="close()">Done</button>
-</ng-template>
+<mat-dialog-content>
+  <ng-container
+    *ngIf="data.role.order == '-'; then noActivity; else activity"
+  ></ng-container>
 
-<ng-template #activity>
+  <ng-template #noActivity>
+    <p>Your role has no activity during the night.</p>
+    <button mat-raised-button color="primary" (click)="finishTurn()">Done</button>
+  </ng-template>
+
+  <ng-template #activity>
   <p class="role-brief">{{ data.role.description }}</p>
 
   <!--  Warden  -->
@@ -33,7 +34,7 @@
       <button mat-raised-button color="primary" (click)="wardenAction()">
         Done
       </button>
-      <button mat-stroked-button color="primary" (click)="close()">Skip</button>
+      <button mat-stroked-button color="primary" (click)="finishTurn()">Skip</button>
     </div>
   </div>
 
@@ -75,7 +76,7 @@
       </div>
 
       <div class="m2 buttonContainer">
-        <button mat-stroked-button color="primary" (click)="close()">
+        <button mat-stroked-button color="primary" (click)="finishTurn()">
           Skip
         </button>
       </div>
@@ -153,7 +154,7 @@
       >
         Finish
       </button>
-      <button mat-stroked-button color="primary" (click)="close()">Skip</button>
+      <button mat-stroked-button color="primary" (click)="finishTurn()">Skip</button>
     </div>
   </div>
 
@@ -211,7 +212,7 @@
       <button mat-raised-button color="primary" (click)="seeingwolfAction()">
         Done
       </button>
-      <button mat-stroked-button color="primary" (click)="close()">Skip</button>
+      <button mat-stroked-button color="primary" (click)="finishTurn()">Skip</button>
     </div>
   </div>
 
@@ -232,7 +233,7 @@
       <button mat-raised-button color="primary" (click)="ghostBusterAction()">
         Done
       </button>
-      <button mat-stroked-button color="primary" (click)="close()">Skip</button>
+      <button mat-stroked-button color="primary" (click)="finishTurn()">Skip</button>
     </div>
   </div>
 
@@ -263,7 +264,7 @@
     </div>
 
     <div class="m2 buttonContainer">
-      <button mat-stroked-button color="primary" (click)="close()">Skip</button>
+      <button mat-stroked-button color="primary" (click)="finishTurn()">Skip</button>
     </div>
   </div>
 
@@ -294,7 +295,7 @@
     </div>
 
     <div class="m2 buttonContainer">
-      <button mat-stroked-button color="primary" (click)="close()">Skip</button>
+      <button mat-stroked-button color="primary" (click)="finishTurn()">Skip</button>
     </div>
   </div>
 
@@ -306,7 +307,7 @@
       <button mat-raised-button color="primary" (click)="idiotAction(true)">
         Rotate left
       </button>
-      <button mat-stroked-button color="primary" (click)="close()">Skip</button>
+      <button mat-stroked-button color="primary" (click)="finishTurn()">Skip</button>
       <button mat-raised-button color="primary" (click)="idiotAction(false)">
         Rotate right
       </button>
@@ -316,7 +317,7 @@
   <!--  Fortune teller  -->
   <div *ngIf="data.role.name === 'Fortune teller'">
     <div class="m2 buttonContainer">
-      <button mat-stroked-button color="primary" (click)="close()">Skip</button>
+      <button mat-stroked-button color="primary" (click)="finishTurn()">Skip</button>
       <button mat-raised-button color="primary" (click)="fortuneTellerAction()">
         Find out
       </button>
@@ -348,13 +349,14 @@
     <mat-divider></mat-divider>
 
     <div class="m2 buttonContainer">
-      <button mat-stroked-button color="primary" (click)="close()">Skip</button>
+      <button mat-stroked-button color="primary" (click)="finishTurn()">Skip</button>
     </div>
   </div>
 
   <!--  Curator  -->
   <div *ngIf="data.role.name === 'Curator'">
     <p>Why didn’t you listen? I told you not to use this role? smh</p>
-    <button mat-raised-button color="primary" (click)="close()">Close</button>
+    <button mat-raised-button color="primary" (click)="finishTurn()">Close</button>
   </div>
-</ng-template>
+  </ng-template>
+</mat-dialog-content>

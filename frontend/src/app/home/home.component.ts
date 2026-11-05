@@ -23,19 +23,23 @@ export class HomeComponent implements OnInit {
 
   featuredRoleNames = [
     'Werewolf',
+    'Alpha wolf',
+    'Seeing wolf',
     'Warden',
     'Witch',
     'Young seer',
-    'Scout',
-    'Fortune teller',
     'Ghost buster',
     'Idiot',
+    'Fortune teller',
+    'Scout',
   ];
 
   get featuredRoles() {
-    return this.roles.filter((role: { name: string }) =>
-      this.featuredRoleNames.includes(role.name),
-    );
+    return this.featuredRoleNames
+      .map((name) =>
+        this.roles.find((role: { name: string }) => role.name === name),
+      )
+      .filter((role): role is NonNullable<typeof role> => !!role);
   }
 
   teamLabel(role: { friendly?: boolean }): string {

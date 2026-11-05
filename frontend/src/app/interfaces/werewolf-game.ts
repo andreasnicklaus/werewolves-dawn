@@ -8,4 +8,5 @@ export interface WerewolfGame {
   playerList: Player[];
   roles?: Role[];
   middleRoles: Role[];
+  roundId?: number;
 }

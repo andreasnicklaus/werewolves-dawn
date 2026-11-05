@@ -14,7 +14,7 @@ import { SHARED_IMPORTS } from './shared-imports';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  title = 'Werewolves - Dawn';
+  title = 'Werewolves Dawn';
 
   constructor(
     private messageService: MessageService,

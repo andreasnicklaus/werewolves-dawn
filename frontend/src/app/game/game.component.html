@@ -17,11 +17,7 @@
       >
         Settings
       </button>
-      <button
-        mat-stroked-button
-        color="primary"
-        (click)="openRoomInfo()"
-      >
+      <button mat-stroked-button color="primary" (click)="openRoomInfo()">
         Room info
       </button>
 
@@ -52,7 +48,7 @@
 
       <div id="playerCards" class="card-grid">
         <mat-card *ngFor="let player of game?.playerList" class="player-card">
-          <mat-card-header>
+          <mat-card-header style="padding: 16px">
             <mat-card-title>{{ player.name }}</mat-card-title>
             <mat-card-subtitle *ngIf="gameService.myName === player.name">
               You
@@ -66,7 +62,10 @@
             >
               {{ player.role.name }}
             </span>
-            <mat-icon color="primary" [matTooltip]="player.role.description || ''">
+            <mat-icon
+              color="primary"
+              [matTooltip]="player.role.description || ''"
+            >
               info
             </mat-icon>
           </mat-card-content>
@@ -109,7 +108,9 @@
 
           <ng-template #middleRoleUncovered>
             <mat-card-header>
-              <mat-card-title>{{ getMiddleRoleAtIndex(i)?.name }}</mat-card-title>
+              <mat-card-title>{{
+                getMiddleRoleAtIndex(i)?.name
+              }}</mat-card-title>
               <mat-card-subtitle>Face-up</mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>{{

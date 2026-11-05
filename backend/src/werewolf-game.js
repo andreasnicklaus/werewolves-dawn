@@ -12,7 +12,8 @@ module.exports.WereWolfGame = class {
     roles;
     middleRoles = [];
     currentRoleOrder = null;
-    waitTime = 10000;
+    roundId = 0;
+    waitTime = 20000;
 
     addPlayer = (playerInfo) => this.playerList.push(playerInfo)
     deletePlayer = (uuid) => this.playerList.splice(this.playerList.indexOf(this.getPlayerWithUUID(uuid)), 1)
@@ -38,6 +39,7 @@ module.exports.WereWolfGame = class {
     }
 
     startGame() {
+        this.roundId = (this.roundId || 0) + 1
         this.resetGame()
         this.shuffleRoles()
     }
@@ -130,7 +132,7 @@ module.exports.WereWolfGame = class {
     }
 
     getPublicInfo() {
-        let result = { roles: this.roles, playerList: [], numberofMiddleRoles: this.middleRoles.length }
+        let result = { type: "GameState", roundId: this.roundId, roles: this.roles, playerList: [], numberofMiddleRoles: this.middleRoles.length }
         let players = [...this.playerList]
         players.forEach(player => {
             let { uuid, name, vote, protectedByWarden } = player
@@ -157,11 +159,12 @@ module.exports.WereWolfGame = class {
 
         })
 
-        // Add uncovered middle roles
-        result.middleRoles = []
+        // Add uncovered middle roles, preserving their original card index so the
+        // frontend can render them at the correct position.
+        result.middleRoles = new Array(this.middleRoles.length).fill(undefined)
         if (this.getPlayerWithUUID(uuid_given).uncoveredMiddleCards) {
             this.getPlayerWithUUID(uuid_given).uncoveredMiddleCards.forEach(index => {
-                result.middleRoles.push(this.middleRoles[index])
+                result.middleRoles[index] = this.middleRoles[index]
             })
         }
 
@@ -276,8 +279,20 @@ module.exports.WereWolfGame = class {
         }
     }
 
+    fortuneTellerMove(uuid) {
+        if (this.getPlayerWithUUID(uuid).role.name === "Fortune teller") {
+            this.getPlayerWithUUID(uuid).actionPerfomed = true
+        }
+    }
+
+    markTurnComplete(uuid) {
+        const player = this.getPlayerWithUUID(uuid)
+        if (player) player.actionPerfomed = true
+    }
+
     scoutMove(uuid, selectedIndex) {
         if (this.getPlayerWithUUID(uuid).role.name === "Scout") {
+            this.getPlayerWithUUID(uuid).actionPerfomed = true
             this.playerList.forEach(player => {
                 if (!player.uncoveredMiddleCards) player.uncoveredMiddleCards = []
                 player.uncoveredMiddleCards.push(selectedIndex)
