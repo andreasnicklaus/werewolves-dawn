@@ -2,30 +2,16 @@
   <!-- Hero -->
   <section class="hero" aria-labelledby="hero-title">
     <div class="hero__copy">
-      <h1 id="hero-title" class="hero__title">
-        Werewolves
-        <span class="hero__dawn">
-          Dawn
-          <span class="hero__moon" aria-hidden="true"></span>
-        </span>
-      </h1>
+      <h1 id="hero-title" class="hero__title">Hope you survive the night</h1>
       <p class="hero__lede">
         A village, a night, and a few wolves among you. Gather your table and
         survive until morning.
       </p>
       <div class="hero__actions">
-        <button
-          mat-raised-button
-          color="primary"
-          (click)="openHost()"
-        >
+        <button mat-raised-button color="primary" (click)="openHost()">
           Host a game
         </button>
-        <button
-          mat-stroked-button
-          color="primary"
-          (click)="openJoin()"
-        >
+        <button mat-stroked-button color="primary" (click)="openJoin()">
           Join a game
         </button>
       </div>
@@ -55,8 +41,8 @@
       </p>
       <p>
         The village’s youngest asks the question no one wants to answer: if I am
-        awake tonight, won’t you all think I might be a werewolf? Will you sleep,
-        or risk your own life to find the evil?
+        awake tonight, won’t you all think I might be a werewolf? Will you
+        sleep, or risk your own life to find the evil?
       </p>
     </div>
   </section>
@@ -68,26 +54,43 @@
       <div class="flow">
         <article class="flow__step">
           <span class="flow__num">01</span>
-          <h3>Night</h3>
+          <h3>Setup &amp; deal</h3>
           <p>
-            Everyone closes their eyes. Each role wakes in turn and plays its
-            action in secret.
+            Choose the roles. Every player gets a secret role, and two extra
+            cards go to the middle.
           </p>
         </article>
         <article class="flow__step">
           <span class="flow__num">02</span>
-          <h3>Day</h3>
+          <h3>Night</h3>
           <p>
-            The village wakes, debates, and votes to remove one player. Five
-            minutes to decide.
+            Everyone closes their eyes. Roles wake in turn and play their
+            action in secret. Each role gets 20 seconds per acting player,
+            and advances early once everyone in that role group is done.
           </p>
         </article>
         <article class="flow__step">
           <span class="flow__num">03</span>
+          <h3>Dawn</h3>
+          <p>
+            The night ends. Roles may have changed during the night, and the
+            village wakes up.
+          </p>
+        </article>
+        <article class="flow__step">
+          <span class="flow__num">04</span>
+          <h3>Day</h3>
+          <p>
+            The village debates and votes to remove one player. Five minutes
+            is the suggested time (you manage it yourselves).
+          </p>
+        </article>
+        <article class="flow__step">
+          <span class="flow__num">05</span>
           <h3>Reckoning</h3>
           <p>
             A werewolf voted out means the villagers win. A villager means the
-            werewolves win.
+            werewolves win. Points are awarded, then the next round begins.
           </p>
         </article>
       </div>
@@ -111,10 +114,7 @@
           <mat-card-header>
             <mat-card-title>{{ role.name }}</mat-card-title>
             <mat-card-subtitle>
-              <mat-chip
-                [color]="role.friendly ? 'primary' : 'warn'"
-                selected
-              >
+              <mat-chip [color]="role.friendly ? 'primary' : 'warn'" selected>
                 {{ teamLabel(role) }}
               </mat-chip>
             </mat-card-subtitle>
@@ -124,6 +124,7 @@
           </mat-card-content>
         </mat-card>
       </div>
+      <p class="role-grid__caption">and many more…</p>
     </div>
   </section>
 
@@ -132,13 +133,12 @@
     <div class="section__inner">
       <h2 id="scenarios-title">Pick your table size</h2>
       <div class="scenario-grid">
-        <mat-card
-          class="scenario-card"
-          *ngFor="let scenario of scenarios"
-        >
+        <mat-card class="scenario-card" *ngFor="let scenario of scenarios">
           <mat-card-header>
             <mat-card-title>{{ scenario.name }}</mat-card-title>
-            <mat-card-subtitle>{{ scenario.players }} players</mat-card-subtitle>
+            <mat-card-subtitle
+              >{{ scenario.players }} players</mat-card-subtitle
+            >
           </mat-card-header>
           <mat-card-content>
             <p>{{ scenario.roles }}</p>
@@ -156,18 +156,10 @@
         Name your host, create a room, and invite your table.
       </p>
       <div class="cta__actions">
-        <button
-          mat-raised-button
-          color="primary"
-          (click)="openHost()"
-        >
+        <button mat-raised-button color="primary" (click)="openHost()">
           Host a game
         </button>
-        <button
-          mat-stroked-button
-          color="primary"
-          (click)="openJoin()"
-        >
+        <button mat-stroked-button color="primary" (click)="openJoin()">
           Join a game
         </button>
       </div>

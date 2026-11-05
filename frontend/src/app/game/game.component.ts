@@ -23,6 +23,7 @@ export class GameComponent implements OnInit, OnDestroy {
     return this.gameService.game;
   }
   private unsubGame?: () => void;
+  private unloading = false;
 
   constructor(
     public gameService: GameService,
@@ -31,7 +32,13 @@ export class GameComponent implements OnInit, OnDestroy {
     private gameSettingsDialog: MatDialog,
     private yourTurnDialog: MatDialog,
     private voteDialog: MatDialog,
-  ) {}
+  ) {
+    if (typeof window !== 'undefined') {
+      window.addEventListener('beforeunload', () => {
+        this.unloading = true;
+      });
+    }
+  }
 
   ngOnInit(): void {
     this.unsubGame = this.gameService.subscribe({
@@ -40,10 +47,15 @@ export class GameComponent implements OnInit, OnDestroy {
       onRoundEnd: this.openVoteDialog,
       onGameStart: this.onGameStart,
     });
+    if (!this.game) {
+      this.gameService.rejoin();
+    }
   }
   ngOnDestroy(): void {
     this.unsubGame?.();
-    this.gameService.leave();
+    if (!this.unloading) {
+      this.gameService.leave();
+    }
     this.roomInfoDialog.closeAll();
     this.gameSettingsDialog.closeAll();
     this.yourTurnDialog.closeAll();

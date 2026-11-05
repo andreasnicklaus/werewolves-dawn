@@ -87,6 +87,7 @@ export function gameServiceTestingProvider(): Provider {
       subscribe: jasmine.createSpy('subscribe'),
       unsubscribe: jasmine.createSpy('unsubscribe'),
       leave: jasmine.createSpy('leave'),
+       rejoin: jasmine.createSpy('rejoin'),
       startGame: jasmine.createSpy('startGame'),
       setupRoles: jasmine.createSpy('setupRoles'),
       getOwnRole: jasmine.createSpy('getOwnRole'),

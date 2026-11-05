@@ -75,6 +75,11 @@ export class YourTurnDialogComponent implements OnInit, OnDestroy {
     this.dialogRef.close();
   }
 
+  finishTurn() {
+    this.gs.sendTurnComplete();
+    this.dialogRef.close();
+  }
+
   wardenAction() {
     this.gs.sendWardenMove(this.selectedPlayerUUID);
     this.close();

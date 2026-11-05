@@ -2,96 +2,273 @@ const { v4: uuidv4 } = require("uuid");
 const { WereWolfGame } = require("./werewolf-game.js");
 
 let rooms = {};
+const connections = new Map(); // connId -> { roomCode, playerId }
 
-function getRoomCode(uuid_given) {
-  for (let code of Object.keys(rooms)) {
-    for (let uuid of Object.keys(rooms[code])) {
-      if (uuid === uuid_given) return code;
-    }
+const RECONNECT_GRACE_MS = 60000;
+
+function getPlayerId(connId) {
+  return connections.get(connId)?.playerId || null;
+}
+
+function getRoomCodeForPlayer(playerId) {
+  for (const code of Object.keys(rooms)) {
+    if (rooms[code].players && rooms[code].players[playerId]) return code;
   }
-
   return null;
 }
 
-function leaveRoom(roomCode, uuid) {
-  if (!rooms[roomCode]) return;
-  if (!rooms[roomCode][uuid]) return;
-  if (Object.keys(rooms[roomCode]).length === 1) {
-    clearTimeout(rooms[roomCode].timeout);
+function getRoom(roomCode) {
+  return rooms[roomCode];
+}
+
+function leaveRoom(roomCode, playerId) {
+  if (!roomCode || !rooms[roomCode]) return;
+  const room = rooms[roomCode];
+  if (!room.players || !room.players[playerId]) return;
+
+  if (room.disconnectTimers && room.disconnectTimers[playerId]) {
+    clearTimeout(room.disconnectTimers[playerId]);
+    delete room.disconnectTimers[playerId];
+  }
+
+  delete room.players[playerId];
+  room.game.deletePlayer(playerId);
+
+  if (Object.keys(room.players).length === 0) {
+    clearTimeout(room.timeout);
     delete rooms[roomCode];
-  } else {
-    delete rooms[roomCode][uuid];
-    rooms[roomCode].game.deletePlayer(uuid);
   }
 }
 
 function broadCastMessage(roomCode, data) {
-  Object.entries(rooms[roomCode]).forEach(([key, value]) => {
-    if (key === "game" || key === "timeout") return;
-    if (!value || !value.socket) return;
-    value.socket.send(JSON.stringify({ roomCode, ...data }));
+  const room = rooms[roomCode];
+  if (!room || !room.players) return;
+  Object.entries(room.players).forEach(([key, entry]) => {
+    if (!entry || !entry.socket) return;
+    try {
+      entry.socket.send(JSON.stringify({ roomCode, ...data }));
+    } catch (e) {
+      console.error("Broadcast send failed:", e);
+    }
   });
 }
 
 function broadCastPlayerInfo(roomCode) {
-  Object.entries(rooms[roomCode]).forEach(([key, value]) => {
-    if (key === "game" || key === "timeout") return;
-    if (!value || !value.socket) return;
-    value.socket.send(
-      JSON.stringify({ roomCode, ...rooms[roomCode].game.getPrivateInfo(key) }),
-    );
+  const room = rooms[roomCode];
+  if (!room || !room.players) return;
+  Object.entries(room.players).forEach(([key, entry]) => {
+    if (!entry || !entry.socket) return;
+    try {
+      entry.socket.send(
+        JSON.stringify({ roomCode, ...room.game.getPrivateInfo(key) }),
+      );
+    } catch (e) {
+      console.error("Broadcast player info failed:", e);
+    }
   });
 }
 
 function broadCastRoundFinishMessage(roomCode) {
-  const winnerFriendly = rooms[roomCode].game.getWinner();
-  const roundId = rooms[roomCode].game.roundId;
+  const room = rooms[roomCode];
+  if (!room) return;
+  const winnerFriendly = room.game.getWinner();
 
-  Object.entries(rooms[roomCode]).forEach(([key, value]) => {
-    if (key === "game" || key === "timeout") return;
-    if (!value || !value.socket) return;
-    value.socket.send(
-      JSON.stringify({
-        type: "winnerDetermined",
-        roundId,
-        winnerFriendly,
-        roleAfterTheRound: rooms[roomCode].game.getRoleAfterTheRound(key),
-      }),
-    );
+  Object.entries(room.players).forEach(([key, entry]) => {
+    if (!entry || !entry.socket) return;
+    try {
+      entry.socket.send(
+        JSON.stringify({
+          type: "winnerDetermined",
+          roundId: room.game.roundId,
+          winnerFriendly,
+          roleAfterTheRound: room.game.getRoleAfterTheRound(key),
+        }),
+      );
+    } catch (e) {
+      console.error("Broadcast round finish failed:", e);
+    }
   });
 }
 
 function sendNextPlayerMessages(roomCode) {
-  let nextUUIDs = rooms[roomCode].game.nextPlayers();
-  const roundId = rooms[roomCode].game.roundId;
+  const room = rooms[roomCode];
+  if (!room) return;
+  room.isAdvancing = true;
+  let nextUUIDs = room.game.nextPlayers();
+  const roundId = room.game.roundId;
+  room.isAdvancing = false;
   if (nextUUIDs) {
     broadCastMessage(roomCode, {
       type: "NextPlayer",
       roundId,
     });
     for (const nextUUID of nextUUIDs) {
-      rooms[roomCode][nextUUID].socket.send(
-        JSON.stringify({
-          type: "YourTurn",
-          roundId,
-        }),
-      );
+      const entry = room.players[nextUUID];
+      if (entry && entry.socket) {
+        try {
+          entry.socket.send(
+            JSON.stringify({
+              type: "YourTurn",
+              roundId,
+            }),
+          );
+        } catch (e) {
+          console.error("Send YourTurn failed:", e);
+        }
+      }
     }
-    rooms[roomCode].timeout = setTimeout(() => {
+    if (room.timeout) {
+      clearTimeout(room.timeout);
+      delete room.timeout;
+    }
+    room.currentTurnPlayerIds = nextUUIDs;
+    room.timeout = setTimeout(() => {
+      const currentRoom = rooms[roomCode];
+      if (!currentRoom || currentRoom.isAdvancing) return;
+      currentRoom.isAdvancing = true;
+      currentRoom.currentTurnPlayerIds = null;
+      if (currentRoom.timeout) {
+        clearTimeout(currentRoom.timeout);
+        delete currentRoom.timeout;
+      }
       sendNextPlayerMessages(roomCode);
-    }, rooms[roomCode].game.waitTime * nextUUIDs.length);
+    }, room.game.waitTime * nextUUIDs.length);
   } else {
     broadCastMessage(roomCode, {
       type: "RoundEnd",
       roundId,
     });
-    rooms[roomCode].game.currentPlayerIndex = null;
-    delete rooms[roomCode].timeout;
+    room.currentTurnPlayerIds = null;
+    room.game.currentPlayerIndex = null;
+    if (room.timeout) {
+      clearTimeout(room.timeout);
+      delete room.timeout;
+    }
   }
 }
 
-module.exports.handleMessage = function (socket, uuid, data) {
-  data = JSON.parse(data);
+function checkTurnCompletion(roomCode) {
+  const room = rooms[roomCode];
+  if (!room || !room.currentTurnPlayerIds || room.isAdvancing) return;
+  const allDone = room.currentTurnPlayerIds.every((uuid) => {
+    const player = room.game.getPlayerWithUUID(uuid);
+    return !!player && player.actionPerfomed === true;
+  });
+  if (!allDone) return;
+  room.isAdvancing = true;
+  room.currentTurnPlayerIds = null;
+  if (room.timeout) {
+    clearTimeout(room.timeout);
+    delete room.timeout;
+  }
+  sendNextPlayerMessages(roomCode);
+}
+
+function markDisconnected(roomCode, playerId) {
+  const room = rooms[roomCode];
+  if (!room || !room.players || !room.players[playerId]) return;
+
+  room.players[playerId].connected = false;
+  room.players[playerId].socket = null;
+
+  if (room.currentTurnPlayerIds && room.currentTurnPlayerIds.includes(playerId)) {
+    room.game.markTurnComplete(playerId);
+    checkTurnCompletion(roomCode);
+  }
+
+  if (room.disconnectTimers[playerId]) {
+    clearTimeout(room.disconnectTimers[playerId]);
+  }
+
+  room.disconnectTimers[playerId] = setTimeout(() => {
+    const currentRoom = rooms[roomCode];
+    if (!currentRoom || !currentRoom.players || !currentRoom.players[playerId]) {
+      return;
+    }
+    if (currentRoom.players[playerId].connected) return;
+
+    for (const [cid, info] of connections.entries()) {
+      if (info.playerId === playerId && info.roomCode === roomCode) connections.delete(cid);
+    }
+    leaveRoom(roomCode, playerId);
+    broadCastMessage(roomCode, { type: "playerDisconnected", playerId });
+  }, RECONNECT_GRACE_MS);
+}
+
+function reclaimPlayer(roomCode, playerId, socket, connId, name) {
+  const room = rooms[roomCode];
+  if (!room || !room.players || !room.players[playerId]) return false;
+
+  const existing = room.players[playerId];
+  if (existing.connId && existing.connId !== connId && existing.socket && existing.socket !== socket) {
+    try {
+      existing.socket.close(4000, "replaced");
+    } catch (e) {
+      console.error("Close replaced socket failed:", e);
+    }
+  }
+
+  if (room.disconnectTimers && room.disconnectTimers[playerId]) {
+    clearTimeout(room.disconnectTimers[playerId]);
+    delete room.disconnectTimers[playerId];
+  }
+
+  room.players[playerId] = {
+    socket,
+    connId,
+    name: name || existing.name,
+    connected: true,
+  };
+
+  if (name && room.game && typeof room.game.getPlayerWithUUID === "function") {
+    const player = room.game.getPlayerWithUUID(playerId);
+    if (player) player.name = name;
+  }
+
+  connections.set(connId, { roomCode, playerId });
+
+  try {
+    socket.send(
+      JSON.stringify({ roomCode, ...room.game.getPrivateInfo(playerId) }),
+    );
+  } catch (e) {
+    console.error("Send reclaimed state failed:", e);
+  }
+
+  broadCastPlayerInfo(roomCode);
+  return true;
+}
+
+function addPlayer(roomCode, playerId, socket, connId, name) {
+  const room = rooms[roomCode];
+  room.game.addPlayer({ uuid: playerId, name });
+  room.players[playerId] = {
+    socket,
+    connId,
+    name,
+    connected: true,
+  };
+  connections.set(connId, { roomCode, playerId });
+
+  try {
+    socket.send(
+      JSON.stringify({ roomCode, ...room.game.getPrivateInfo(playerId) }),
+    );
+  } catch (e) {
+    console.error("Send new player state failed:", e);
+  }
+}
+
+module.exports.handleMessage = function (socket, connId, data) {
+  let parsed;
+  try {
+    parsed = JSON.parse(data);
+  } catch (e) {
+    console.error("Invalid message:", e);
+    return;
+  }
+  data = parsed;
+
   console.log("Received message", data);
 
   let {
@@ -103,99 +280,172 @@ module.exports.handleMessage = function (socket, uuid, data) {
     selectedPlayerUUID,
     selectedIndex,
     left,
+    playerId: providedPlayerId,
   } = data;
-  if (!roomCode) roomCode = getRoomCode(uuid);
 
-  if (meta === "join") {
+  if (!roomCode) {
+    const knownPlayerId = getPlayerId(connId);
+    if (knownPlayerId) roomCode = getRoomCodeForPlayer(knownPlayerId);
+  }
+
+  if (meta === "join" || meta === "rejoin") {
+    const playerId = providedPlayerId || uuidv4();
+
+    if (roomCode && rooms[roomCode] && rooms[roomCode].players && rooms[roomCode].players[playerId]) {
+      reclaimPlayer(roomCode, playerId, socket, connId, name);
+      return;
+    }
+
     if (!roomCode || !rooms[roomCode]) {
       roomCode = uuidv4().substring(0, 6);
-      rooms[roomCode] = { game: new WereWolfGame() };
+      rooms[roomCode] = {
+        game: new WereWolfGame(),
+        players: {},
+        disconnectTimers: {},
+      };
     }
 
-    rooms[roomCode].game.addPlayer({ uuid, name });
-    rooms[roomCode][uuid] = { socket: socket };
-  } else if (meta === "leave") {
-    leaveRoom(roomCode, uuid);
+    addPlayer(roomCode, playerId, socket, connId, name);
+    broadCastPlayerInfo(roomCode);
+    return;
+  }
+
+  const playerId = getPlayerId(connId);
+  if (!playerId) {
+    try {
+      socket.send(JSON.stringify({ type: "rejoinFailed" }));
+    } catch (e) {}
+    return;
+  }
+
+  if (!roomCode) roomCode = getRoomCodeForPlayer(playerId);
+  if (!roomCode || !rooms[roomCode]) {
+    try {
+      socket.send(JSON.stringify({ type: "rejoinFailed" }));
+    } catch (e) {}
+    return;
+  }
+
+  const room = rooms[roomCode];
+
+  if (meta === "leave") {
+    leaveRoom(roomCode, playerId);
+    connections.delete(connId);
+    return;
   } else if (meta === "startGame") {
-    // Cancel any timer left over from a previous round before starting a new one.
-    if (rooms[roomCode].timeout) {
-      clearTimeout(rooms[roomCode].timeout);
-      delete rooms[roomCode].timeout;
+    if (room.timeout) {
+      clearTimeout(room.timeout);
+      delete room.timeout;
     }
-    rooms[roomCode].game.startGame();
-    broadCastMessage(roomCode, { type: "gameStart", roundId: rooms[roomCode].game.roundId });
-    rooms[roomCode].timeout = setTimeout(() => {
+    room.currentTurnPlayerIds = null;
+    room.isAdvancing = false;
+    room.game.startGame();
+    broadCastMessage(roomCode, { type: "gameStart", roundId: room.game.roundId });
+    room.timeout = setTimeout(() => {
       sendNextPlayerMessages(roomCode);
-    }, rooms[roomCode].game.waitTime);
+    }, room.game.waitTime);
   } else if (meta === "setupRoles") {
-    rooms[roomCode].game.setRoles(roles);
+    room.game.setRoles(roles);
   } else if (meta === "voteGiven") {
-    rooms[roomCode].game.vote(uuid, voteFor);
-    if (rooms[roomCode].game.allPlayersVoted()) {
+    room.game.vote(playerId, voteFor);
+    if (room.game.allPlayersVoted()) {
       broadCastRoundFinishMessage(roomCode);
     }
   } else if (meta === "wardenAction") {
-    rooms[roomCode].game.wardenMove(uuid, selectedPlayerUUID);
+    room.game.wardenMove(playerId, selectedPlayerUUID);
   } else if (meta === "uncoverMiddleCard") {
-    const uncoveredRole = rooms[roomCode].game.uncoverMiddleRole(
-      uuid,
+    const uncoveredRole = room.game.uncoverMiddleRole(
+      playerId,
       selectedIndex,
     );
-    rooms[roomCode][uuid].socket.send(
-      JSON.stringify({
-        type: "UncoveredCard",
-        roundId: rooms[roomCode].game.roundId,
-        uncoveredRole,
-      }),
-    );
+    const entry = room.players[playerId];
+    if (entry && entry.socket) {
+      entry.socket.send(
+        JSON.stringify({
+          type: "UncoveredCard",
+          roundId: room.game.roundId,
+          uncoveredRole,
+        }),
+      );
+    }
   } else if (meta === "alphaWolfAction") {
-    rooms[roomCode].game.alphaWolfMove(uuid, selectedPlayerUUID);
+    room.game.alphaWolfMove(playerId, selectedPlayerUUID);
   } else if (meta === "seeingWolfAction") {
-    const uncoveredRole = rooms[roomCode].game.seeingWolfMove(
-      uuid,
+    const uncoveredRole = room.game.seeingWolfMove(
+      playerId,
       selectedPlayerUUID,
     );
-    rooms[roomCode][uuid].socket.send(
-      JSON.stringify({
-        type: "UncoveredCard",
-        roundId: rooms[roomCode].game.roundId,
-        uncoveredRole,
-      }),
-    );
+    const entry = room.players[playerId];
+    if (entry && entry.socket) {
+      entry.socket.send(
+        JSON.stringify({
+          type: "UncoveredCard",
+          roundId: room.game.roundId,
+          uncoveredRole,
+        }),
+      );
+    }
   } else if (meta === "ghostBusterAction") {
-    const uncoveredRole = rooms[roomCode].game.ghostBusterMove(
-      uuid,
+    const uncoveredRole = room.game.ghostBusterMove(
+      playerId,
       selectedPlayerUUID,
     );
-    rooms[roomCode][uuid].socket.send(
-      JSON.stringify({
-        type: "UncoveredCard",
-        roundId: rooms[roomCode].game.roundId,
-        uncoveredRole,
-      }),
-    );
+    const entry = room.players[playerId];
+    if (entry && entry.socket) {
+      entry.socket.send(
+        JSON.stringify({
+          type: "UncoveredCard",
+          roundId: room.game.roundId,
+          uncoveredRole,
+        }),
+      );
+    }
   } else if (meta === "witchAction") {
-    rooms[roomCode].game.witchMove(uuid, selectedIndex, selectedPlayerUUID);
+    room.game.witchMove(playerId, selectedIndex, selectedPlayerUUID);
   } else if (meta === "idiotAction") {
-    rooms[roomCode].game.idiotMove(uuid, left);
+    room.game.idiotMove(playerId, left);
   } else if (meta === "fortuneTellerAction") {
-    const playersWithActions = rooms[roomCode].game.getPlayersWithActions(uuid);
+    room.game.fortuneTellerMove(playerId);
+    const playersWithActions = room.game.getPlayersWithActions(playerId);
     console.log("playersWithActions", playersWithActions);
-    rooms[roomCode][uuid].socket.send(
-      JSON.stringify({
-        type: "actionPlayers",
-        roundId: rooms[roomCode].game.roundId,
-        playersWithActions,
-      }),
-    );
+    const entry = room.players[playerId];
+    if (entry && entry.socket) {
+      entry.socket.send(
+        JSON.stringify({
+          type: "actionPlayers",
+          roundId: room.game.roundId,
+          playersWithActions,
+        }),
+      );
+    }
   } else if (meta === "scoutAction") {
-    rooms[roomCode].game.scoutMove(uuid, selectedIndex);
+    room.game.scoutMove(playerId, selectedIndex);
+  } else if (meta === "turnComplete") {
+    room.game.markTurnComplete(playerId);
   }
 
-  if (roomCode) broadCastPlayerInfo(roomCode);
+  if (roomCode) {
+    checkTurnCompletion(roomCode);
+    broadCastPlayerInfo(roomCode);
+  }
 };
 
-module.exports.handleClose = function (socket, uuid) {
-  const roomCode = getRoomCode(uuid);
-  leaveRoom(roomCode, uuid);
+module.exports.handleClose = function (socket, connId) {
+  const info = connections.get(connId);
+  if (!info) return;
+
+  const { roomCode, playerId } = info;
+  connections.delete(connId);
+
+  const room = rooms[roomCode];
+  if (!room || !room.players || !room.players[playerId]) return;
+  if (room.players[playerId].connId !== connId) {
+    connections.delete(connId);
+    return;
+  }
+
+  markDisconnected(roomCode, playerId);
 };
+
+module.exports.leaveRoom = leaveRoom;
+module.exports.getRoomCode = getRoomCodeForPlayer;

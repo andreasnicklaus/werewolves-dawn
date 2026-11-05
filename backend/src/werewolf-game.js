@@ -13,7 +13,7 @@ module.exports.WereWolfGame = class {
     middleRoles = [];
     currentRoleOrder = null;
     roundId = 0;
-    waitTime = 10000;
+    waitTime = 20000;
 
     addPlayer = (playerInfo) => this.playerList.push(playerInfo)
     deletePlayer = (uuid) => this.playerList.splice(this.playerList.indexOf(this.getPlayerWithUUID(uuid)), 1)
@@ -279,8 +279,20 @@ module.exports.WereWolfGame = class {
         }
     }
 
+    fortuneTellerMove(uuid) {
+        if (this.getPlayerWithUUID(uuid).role.name === "Fortune teller") {
+            this.getPlayerWithUUID(uuid).actionPerfomed = true
+        }
+    }
+
+    markTurnComplete(uuid) {
+        const player = this.getPlayerWithUUID(uuid)
+        if (player) player.actionPerfomed = true
+    }
+
     scoutMove(uuid, selectedIndex) {
         if (this.getPlayerWithUUID(uuid).role.name === "Scout") {
+            this.getPlayerWithUUID(uuid).actionPerfomed = true
             this.playerList.forEach(player => {
                 if (!player.uncoveredMiddleCards) player.uncoveredMiddleCards = []
                 player.uncoveredMiddleCards.push(selectedIndex)
